@@ -163,6 +163,158 @@
       transform: translateY(-7px) rotate(-45deg);
     }
 
+    /* ── HERO ── */
+    .hero {
+      background: #0a0a0a;
+      min-height: calc(100vh - var(--nav-height));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 56px 80px 64px;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212, 160, 255, 0.12);
+      border: 1px solid rgba(212, 160, 255, 0.3);
+      color: #d4a0ff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      width: fit-content;
+    }
+
+    .hero-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: #d4a0ff;
+      border-radius: 50%;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      color: #fff;
+    }
+
+    .hero-heading .glitch {
+      color: #d4a0ff;
+      display: inline;
+      position: relative;
+      animation: glitch-trigger 4s infinite;
+    }
+
+    @keyframes glitch-trigger {
+      0%, 88%  { animation-timing-function: step-end; }
+      88%      { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
+      88.5%    { clip-path: inset(20% 0 30% 0); transform: skewX(-12deg) translateX(-4px); color: #ff5ef7; text-shadow: 3px 0 0 #00e5ff; }
+      89%      { clip-path: inset(55% 0 10% 0); transform: skewX(8deg)  translateX(5px);  color: #00e5ff; text-shadow: -3px 0 0 #ff5ef7; }
+      89.5%    { clip-path: inset(10% 0 60% 0); transform: skewX(-6deg) translateX(-3px); color: #d4a0ff; text-shadow: 2px 0 0 #ff5ef7; }
+      90%      { clip-path: inset(40% 0 20% 0); transform: skewX(14deg) translateX(4px);  color: #ff5ef7; text-shadow: -2px 0 0 #00e5ff; }
+      90.5%    { clip-path: inset(0); transform: skewX(-2deg); color: #d4a0ff; text-shadow: none; }
+      91%      { clip-path: inset(30% 0 40% 0); transform: skewX(10deg) translateX(-5px); color: #00e5ff; text-shadow: 3px 0 0 #ff5ef7; }
+      91.5%    { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
+      100%     { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 400px;
+    }
+
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .hero-scroll span {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .hero-scroll-arrow {
+      width: 20px;
+      height: 20px;
+      color: rgba(255, 255, 255, 0.3);
+      animation: bounce-down 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(7px); }
+    }
+
+    /* Right column */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Gradient fade over left edge of video */
+    .hero-right::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, #0a0a0a 0%, #0a0a0a 4%, transparent 38%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 56vw;
+        min-height: unset;
+      }
+
+      .hero-left {
+        padding: 64px 20px 40px;
+      }
+
+      .hero-right::before {
+        background: linear-gradient(to bottom, #0a0a0a 0%, transparent 30%);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-left {
+        padding: 48px 20px 36px;
+        gap: 22px;
+      }
+    }
+
     /* ── PLACEHOLDER SECTIONS ── */
     main {
       min-height: calc(100vh - var(--nav-height));
@@ -277,6 +429,33 @@
       </button>
     </div>
   </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">London-based nail artist</div>
+
+      <h1 class="hero-heading">
+        Nails that make you<br>
+        <span class="glitch">stop scrolling</span>
+      </h1>
+
+      <p class="hero-desc">
+        Editorial, avant-garde, and wearable nail art crafted for creatives,
+        brands, and anyone who treats their hands as a canvas.
+      </p>
+
+      <div class="hero-scroll">
+        <span>Scroll</span>
+        <svg class="hero-scroll-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4 7 10 13 16 7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <video src="hero.mp4" autoplay muted loop playsinline></video>
+    </div>
+  </section>
 
   <main>
     <section id="work">
