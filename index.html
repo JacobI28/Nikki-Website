@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikki Panic — Nail Artist</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --border: #e0e0e0;
+      --nav-height: 64px;
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+    }
+
+    .nav-inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Logo */
+    .nav-logo {
+      justify-self: start;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--black);
+      white-space: nowrap;
+    }
+
+    /* Centre links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      color: var(--black);
+      position: relative;
+      transition: opacity 0.15s;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0;
+      height: 1px;
+      background: var(--black);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      opacity: 0.6;
+    }
+
+    /* Book now */
+    .nav-actions {
+      justify-self: end;
+    }
+
+    .btn-book {
+      display: inline-block;
+      padding: 9px 22px;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-book:hover {
+      background: #222;
+      transform: translateY(-1px);
+    }
+
+    .btn-book:active {
+      transform: translateY(0);
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      justify-self: end;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--black);
+      transition: transform 0.25s, opacity 0.25s;
+      transform-origin: center;
+    }
+
+    .nav-toggle.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ── PLACEHOLDER SECTIONS ── */
+    main {
+      min-height: calc(100vh - var(--nav-height));
+    }
+
+    section {
+      padding: 120px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    section p {
+      font-size: 16px;
+      color: #666;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+        position: relative;
+      }
+
+      .nav-inner {
+        grid-template-columns: 1fr auto;
+      }
+
+      .nav-links-wrapper {
+        display: none;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 20px 20px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+
+      .nav-links-wrapper.open {
+        display: flex;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        width: 100%;
+      }
+
+      .nav-links li {
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 14px 0;
+        font-size: 16px;
+      }
+
+      .nav-links a::after {
+        display: none;
+      }
+
+      .nav-actions {
+        margin-top: 20px;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      /* hide desktop centre+actions inside the grid */
+      .nav-inner > .nav-links-wrapper {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">Nikki Panic</a>
+
+      <div class="nav-links-wrapper" id="navMenu">
+        <ul class="nav-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#videos">Videos</a></li>
+          <li><a href="#collabs">Collabs</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn-book" href="#contact">Book now</a>
+        </div>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section id="work">
+      <h2>Work</h2>
+      <p>Gallery coming soon.</p>
+    </section>
+
+    <section id="videos">
+      <h2>Videos</h2>
+      <p>Video content coming soon.</p>
+    </section>
+
+    <section id="collabs">
+      <h2>Collabs</h2>
+      <p>Collaboration projects coming soon.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Booking enquiries coming soon.</p>
+    </section>
+  </main>
+
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('navMenu');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close mobile menu on link click
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', false);
+      });
+    });
+  </script>
+
+</body>
+</html>
