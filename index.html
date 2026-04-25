@@ -315,6 +315,85 @@
       }
     }
 
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat-number {
+      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--black);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    .stat-platform {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d4a0ff;
+    }
+
+    @media (max-width: 768px) {
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat:nth-child(2) {
+        border-right: none;
+      }
+
+      .stat:nth-child(1),
+      .stat:nth-child(2) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .stat {
+        padding: 28px 24px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .stat:last-child {
+        border-bottom: none;
+      }
+    }
+
     /* ── PLACEHOLDER SECTIONS ── */
     main {
       min-height: calc(100vh - var(--nav-height));
@@ -457,6 +536,42 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════
+       STATS BAR — edit the data-* attributes to update numbers.
+       data-count   : numeric target (integer or decimal, e.g. 2.4)
+       data-suffix  : text appended after number (e.g. "M", "K", "+")
+       data-decimals: decimal places to show during count (default 0)
+       Leave data-count absent for a static (non-animated) number.
+  ════════════════════════════════════════════════ -->
+  <div class="stats-bar" id="statsBar">
+
+    <div class="stat">
+      <span class="stat-number" data-count="2.4" data-suffix="M" data-decimals="1">2.4M</span>
+      <span class="stat-label">Total likes</span>
+      <span class="stat-platform">TikTok</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-number" data-count="180" data-suffix="K">180K</span>
+      <span class="stat-label">Followers</span>
+      <span class="stat-platform">Instagram</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-number" data-count="340" data-suffix="K">340K</span>
+      <span class="stat-label">Followers</span>
+      <span class="stat-platform">TikTok</span>
+    </div>
+
+    <div class="stat">
+      <!-- No data-count: static display, no animation -->
+      <span class="stat-number">12M+</span>
+      <span class="stat-label">Video views</span>
+      <span class="stat-platform">Combined reach</span>
+    </div>
+
+  </div>
+
   <main>
     <section id="work">
       <h2>Work</h2>
@@ -497,6 +612,52 @@
         toggle.setAttribute('aria-expanded', false);
       });
     });
+
+    // ── STATS COUNT-UP ──────────────────────────────────────────
+    // Animates stat-number elements that have a data-count attribute.
+    // Easing: ease-out cubic. Duration: 1600ms.
+    (function () {
+      const DURATION = 1600;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function animateStat(el) {
+        const target   = parseFloat(el.dataset.count);
+        const suffix   = el.dataset.suffix  || '';
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const start    = performance.now();
+
+        function tick(now) {
+          const elapsed  = now - start;
+          const progress = Math.min(elapsed / DURATION, 1);
+          const value    = target * easeOutCubic(progress);
+          el.textContent = value.toFixed(decimals) + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      const targets = Array.from(
+        document.querySelectorAll('.stat-number[data-count]')
+      );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateStat(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
+
+      targets.forEach(el => observer.observe(el));
+    })();
   </script>
 
 </body>
