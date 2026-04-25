@@ -394,6 +394,155 @@
       }
     }
 
+    /* ── VIDEOS SECTION ── */
+    .videos-section {
+      padding: 80px 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .videos-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 64px;
+      margin-bottom: 12px;
+    }
+
+    .videos-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    .videos-view-all {
+      font-size: 13px;
+      font-weight: 600;
+      color: #d4a0ff;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: opacity 0.15s;
+    }
+
+    .videos-view-all:hover {
+      opacity: 0.7;
+    }
+
+    .videos-drag-hint {
+      padding: 0 64px;
+      margin-bottom: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ccc;
+      user-select: none;
+    }
+
+    .videos-track {
+      display: flex;
+      gap: 16px;
+      padding: 4px 64px 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      cursor: grab;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .videos-track:active {
+      cursor: grabbing;
+    }
+
+    /* hide scrollbar cross-browser */
+    .videos-track::-webkit-scrollbar { display: none; }
+    .videos-track { scrollbar-width: none; -ms-overflow-style: none; }
+
+    .video-card {
+      flex: 0 0 180px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .video-thumb {
+      position: relative;
+      width: 180px;
+      aspect-ratio: 9 / 16;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .video-thumb-bg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .video-play-btn {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+
+    .video-play-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: #000;
+      margin-left: 2px; /* optical centre for triangle */
+    }
+
+    .video-views {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      border-radius: 100px;
+    }
+
+    .video-title {
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--black);
+      max-width: 180px;
+    }
+
+    @media (max-width: 768px) {
+      .videos-header,
+      .videos-drag-hint {
+        padding: 0 20px;
+      }
+
+      .videos-track {
+        padding: 4px 20px 20px;
+      }
+    }
+
     /* ── PLACEHOLDER SECTIONS ── */
     main {
       min-height: calc(100vh - var(--nav-height));
@@ -578,9 +727,107 @@
       <p>Gallery coming soon.</p>
     </section>
 
-    <section id="videos">
-      <h2>Videos</h2>
-      <p>Video content coming soon.</p>
+    <!-- ── VIDEOS ─────────────────────────────────────────────────
+         To add / edit cards: copy a .video-card block, update the
+         gradient stop colours, data-src (future video URL), views,
+         and title. The drag-scroll JS is automatic.
+    ──────────────────────────────────────────────────────────── -->
+    <section id="videos" class="videos-section">
+
+      <div class="videos-header">
+        <span class="videos-label">Videos</span>
+        <a class="videos-view-all" href="#">View all →</a>
+      </div>
+
+      <p class="videos-drag-hint">Drag to explore →</p>
+
+      <div class="videos-track" id="videosTrack">
+
+        <div class="video-card">
+          <div class="video-thumb">
+            <svg class="video-thumb-bg" viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#1a0533"/>
+                  <stop offset="100%" stop-color="#6b21a8"/>
+                </linearGradient>
+              </defs>
+              <rect width="180" height="320" fill="url(#g1)"/>
+            </svg>
+            <div class="video-views">2.1M views</div>
+            <div class="video-play">
+              <div class="video-play-btn">
+                <svg viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span class="video-title">Chrome powder nails — full process</span>
+        </div>
+
+        <div class="video-card">
+          <div class="video-thumb">
+            <svg class="video-thumb-bg" viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#0f1e40"/>
+                  <stop offset="100%" stop-color="#e040fb"/>
+                </linearGradient>
+              </defs>
+              <rect width="180" height="320" fill="url(#g2)"/>
+            </svg>
+            <div class="video-views">890K views</div>
+            <div class="video-play">
+              <div class="video-play-btn">
+                <svg viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span class="video-title">Y2K 3D gel roses — tutorial</span>
+        </div>
+
+        <div class="video-card">
+          <div class="video-thumb">
+            <svg class="video-thumb-bg" viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#001a2e"/>
+                  <stop offset="100%" stop-color="#00b4d8"/>
+                </linearGradient>
+              </defs>
+              <rect width="180" height="320" fill="url(#g3)"/>
+            </svg>
+            <div class="video-views">540K views</div>
+            <div class="video-play">
+              <div class="video-play-btn">
+                <svg viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span class="video-title">Aura nails — blending technique</span>
+        </div>
+
+        <div class="video-card">
+          <div class="video-thumb">
+            <svg class="video-thumb-bg" viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g4" x1="1" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2d0a1e"/>
+                  <stop offset="100%" stop-color="#ff6b6b"/>
+                </linearGradient>
+              </defs>
+              <rect width="180" height="320" fill="url(#g4)"/>
+            </svg>
+            <div class="video-views">1.4M views</div>
+            <div class="video-play">
+              <div class="video-play-btn">
+                <svg viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span class="video-title">Glazed donut nails in 60 seconds</span>
+        </div>
+
+      </div>
     </section>
 
     <section id="collabs">
@@ -612,6 +859,36 @@
         toggle.setAttribute('aria-expanded', false);
       });
     });
+
+    // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
+    (function () {
+      const track = document.getElementById('videosTrack');
+      if (!track) return;
+
+      let isDragging = false, startX = 0, scrollLeft = 0;
+
+      track.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX    = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+      });
+
+      document.addEventListener('mouseup',   () => { isDragging = false; });
+      document.addEventListener('mouseleave', () => { isDragging = false; });
+
+      track.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x    = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.4;
+        track.scrollLeft = scrollLeft - walk;
+      });
+
+      // Prevent stray clicks after drag
+      track.addEventListener('click', e => {
+        if (Math.abs(track.scrollLeft - scrollLeft) > 4) e.preventDefault();
+      });
+    })();
 
     // ── STATS COUNT-UP ──────────────────────────────────────────
     // Animates stat-number elements that have a data-count attribute.
