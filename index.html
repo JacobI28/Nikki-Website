@@ -248,6 +248,33 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      position: relative;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      z-index: 0;
+    }
+
+    /* Dark gradient overlay so text stays legible */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.75) 0%,
+        rgba(0, 0, 0, 0.35) 50%,
+        rgba(0, 0, 0, 0.2) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
     }
 
     .hero-left {
@@ -258,7 +285,7 @@
       padding: 100px 64px 64px 80px;
       gap: 28px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .hero-badge {
@@ -1120,6 +1147,7 @@
   </div>
 
   <section class="hero">
+    <video class="hero-video" src="hero.MP4" autoplay muted loop playsinline></video>
     <div class="hero-left">
       <h1 class="hero-heading">
         <span class="hero-text-main">Nails that make you </span><span class="hero-accent">stop scrolling</span>
