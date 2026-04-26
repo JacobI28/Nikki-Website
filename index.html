@@ -381,16 +381,7 @@
 
     @media (max-width: 480px) {
       .stats-bar {
-        grid-template-columns: 1fr;
-      }
-
-      .stat {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .stat:last-child {
-        border-bottom: none;
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
@@ -613,21 +604,11 @@
 
     .work-main-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, 226px);
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
 
-    .work-hero-item { grid-row: 1 / 3; }
-
-    .work-bottom-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .work-bottom-grid .work-item { aspect-ratio: 1 / 1; }
+    .work-main-grid .work-item { aspect-ratio: 4 / 5; }
 
     /* Cards */
     .work-item {
@@ -700,21 +681,6 @@
     @media (max-width: 900px) {
       .work-header { padding: 48px 20px 36px; }
       .work-content { padding: 0 12px; }
-      .work-main-grid { grid-template-rows: repeat(2, 180px); gap: 6px; }
-      .work-bottom-grid { gap: 6px; margin-top: 6px; }
-    }
-
-    @media (max-width: 768px) {
-      .work-main-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        gap: 6px;
-      }
-      .work-main-grid .work-item { aspect-ratio: 16 / 9; }
-      .work-hero-item { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 3; }
-      .work-bottom-grid { grid-template-columns: 1fr; }
-      .work-bottom-grid .work-item { aspect-ratio: 16 / 9; }
-      .work-bottom-grid .work-item:last-child { display: block; }
     }
 
     /* ── BRAND COLLABORATIONS ── */
@@ -1173,114 +1139,6 @@
   </div>
 
   <main>
-    <!-- ── SELECTED WORK ────────────────────────────────────────────
-         Grid: left hero spans 2 rows; middle + right have 2 stacked each.
-         Bottom row: 3 equal squares. All cards share .work-item hover fx.
-         Ticker: 3 repetitions per copy × 2 copies = seamless on any screen.
-    ─────────────────────────────────────────────────────────────────── -->
-    <section id="work" class="work-section">
-
-      <div class="work-header reveal reveal-up">
-        <span class="work-section-label">Selected work</span>
-        <a class="work-view-all" href="#">View all →</a>
-      </div>
-
-      <div class="ticker-wrap reveal reveal-up">
-        <div class="ticker-track">
-          <span class="ticker-copy">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span><span class="ticker-copy" aria-hidden="true">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span>
-        </div>
-      </div>
-
-      <div class="work-content reveal reveal-scale">
-
-        <div class="work-main-grid">
-
-          <!-- Left: hero, spans 2 rows -->
-          <div class="work-item work-hero-item">
-            <div class="work-img" style="background: linear-gradient(160deg, #0d001a 0%, #3d0066 45%, #000d26 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 14.2K</span>
-              <span class="work-tag">3D sculpted</span>
-            </div>
-          </div>
-
-          <!-- Middle top -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #001a10 0%, #005c30 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 8.7K</span>
-              <span class="work-tag">Chrome finish</span>
-            </div>
-          </div>
-
-          <!-- Right top -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #0a0820 0%, #1a0a50 50%, #440088 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 6.1K</span>
-              <span class="work-tag">Crystal set</span>
-            </div>
-          </div>
-
-          <!-- Middle bottom -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #1a0400 0%, #7a1800 50%, #400800 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 11.3K</span>
-              <span class="work-tag">Hand painted</span>
-            </div>
-          </div>
-
-          <!-- Right bottom -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #00141e 0%, #003d52 50%, #006866 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 9.5K</span>
-              <span class="work-tag">Aura nails</span>
-            </div>
-          </div>
-
-        </div><!-- /work-main-grid -->
-
-        <div class="work-bottom-grid">
-
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #1a0c00 0%, #5c2800 50%, #7a3800 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 7.8K</span>
-              <span class="work-tag">Glazed</span>
-            </div>
-          </div>
-
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #000018 0%, #10003a 50%, #4a0066 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 18.4K</span>
-              <span class="work-tag">Viral</span>
-            </div>
-          </div>
-
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #0a1400 0%, #283800 50%, #005520 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 5.2K</span>
-              <span class="work-tag">Nail art</span>
-            </div>
-          </div>
-
-        </div><!-- /work-bottom-grid -->
-
-      </div><!-- /work-content -->
-
-    </section>
 
     <!-- ── VIDEOS ─────────────────────────────────────────────────
          To add / edit cards: copy a .video-card block, update the
@@ -1452,6 +1310,88 @@
         </div>
 
       </div>
+
+    </section>
+
+    <!-- ── SELECTED WORK ────────────────────────────────────────────
+         Grid: left hero spans 2 rows; middle + right have 2 stacked each.
+         Bottom row: 3 equal squares. All cards share .work-item hover fx.
+         Ticker: 3 repetitions per copy × 2 copies = seamless on any screen.
+    ─────────────────────────────────────────────────────────────────── -->
+    <section id="work" class="work-section">
+
+      <div class="work-header reveal reveal-up">
+        <span class="work-section-label">Selected work</span>
+        <a class="work-view-all" href="#">View all →</a>
+      </div>
+
+      <div class="ticker-wrap reveal reveal-up">
+        <div class="ticker-track">
+          <span class="ticker-copy">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span><span class="ticker-copy" aria-hidden="true">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span>
+        </div>
+      </div>
+
+      <div class="work-content reveal reveal-scale">
+
+        <div class="work-main-grid">
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(160deg, #0d001a 0%, #3d0066 45%, #000d26 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 14.2K</span>
+              <span class="work-tag">3D sculpted</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #000018 0%, #10003a 50%, #4a0066 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 18.4K</span>
+              <span class="work-tag">Viral</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #1a0400 0%, #7a1800 50%, #400800 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 11.3K</span>
+              <span class="work-tag">Hand painted</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #0a0820 0%, #1a0a50 50%, #440088 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 6.1K</span>
+              <span class="work-tag">Crystal set</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #001a10 0%, #005c30 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 8.7K</span>
+              <span class="work-tag">Chrome finish</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #00141e 0%, #003d52 50%, #006866 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 9.5K</span>
+              <span class="work-tag">Aura nails</span>
+            </div>
+          </div>
+
+        </div><!-- /work-main-grid -->
+
+      </div><!-- /work-content -->
 
     </section>
 
