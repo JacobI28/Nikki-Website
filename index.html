@@ -35,8 +35,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       height: var(--nav-height);
       display: flex;
       align-items: center;
@@ -54,11 +56,11 @@
     /* Logo */
     .nav-logo {
       justify-self: start;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.02em;
       text-decoration: none;
-      color: var(--black);
+      color: #fff;
       white-space: nowrap;
     }
 
@@ -71,32 +73,18 @@
     }
 
     .nav-links a {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.01em;
       text-decoration: none;
-      color: var(--black);
+      color: rgba(255, 255, 255, 0.85);
       position: relative;
-      transition: opacity 0.15s;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -3px;
-      width: 0;
-      height: 1px;
-      background: var(--black);
-      transition: width 0.2s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
+      transition: color 0.15s;
+      font-variant-numeric: tabular-nums;
     }
 
     .nav-links a:hover {
-      opacity: 0.6;
+      color: #fff;
     }
 
     /* Book now */
@@ -107,11 +95,11 @@
     .btn-book {
       display: inline-block;
       padding: 9px 22px;
-      background: var(--black);
-      color: var(--white);
+      background: #d4a0ff;
+      color: #0a0a0a;
       font-family: var(--font);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.02em;
       text-decoration: none;
       border-radius: 100px;
@@ -122,7 +110,7 @@
     }
 
     .btn-book:hover {
-      background: #222;
+      background: #c084ff;
       transform: translateY(-1px);
     }
 
@@ -146,7 +134,7 @@
       display: block;
       width: 22px;
       height: 2px;
-      background: var(--black);
+      background: #fff;
       transition: transform 0.25s, opacity 0.25s;
       transform-origin: center;
     }
@@ -176,7 +164,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 80px 56px 80px 64px;
+      padding: 100px 64px 100px 80px;
       gap: 28px;
       position: relative;
       z-index: 1;
@@ -207,16 +195,22 @@
     }
 
     .hero-heading {
-      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+      font-size: clamp(3.2rem, 6.5vw, 6.5rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
       color: #fff;
+      perspective: 800px;
+      transform-style: preserve-3d;
+    }
+
+    .hero-text-main {
+      display: block;
     }
 
     .hero-heading .glitch {
       color: #d4a0ff;
-      display: inline;
+      display: inline-block;
       position: relative;
       animation: glitch-trigger 4s infinite;
     }
@@ -333,7 +327,7 @@
     }
 
     .stat-number {
-      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-size: clamp(2.4rem, 3.8vw, 4rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1;
@@ -375,7 +369,7 @@
 
     /* ── VIDEOS SECTION ── */
     .videos-section {
-      padding: 80px 0;
+      padding: 100px 0;
       background: var(--white);
       border-bottom: 1px solid var(--border);
       overflow: hidden;
@@ -593,7 +587,7 @@
     .work-main-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 12px;
     }
 
     .work-main-grid .work-item { aspect-ratio: 4 / 5; }
@@ -673,7 +667,7 @@
 
     /* ── BRAND COLLABORATIONS ── */
     .collabs-section {
-      padding: 96px 64px;
+      padding: 120px 80px;
       background: var(--white);
       border-bottom: 1px solid var(--border);
     }
@@ -686,9 +680,12 @@
     }
 
     .collabs-heading {
-      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      font-size: clamp(2.6rem, 4.5vw, 5rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      perspective: 800px;
+      transform-style: preserve-3d;
     }
 
     .collabs-sub {
@@ -705,7 +702,7 @@
 
     .collab-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 4px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -842,7 +839,7 @@
     }
 
     .cta-ghost-text {
-      font-size: clamp(80px, 18vw, 220px);
+      font-size: clamp(100px, 22vw, 300px);
       font-weight: 800;
       letter-spacing: -0.04em;
       white-space: nowrap;
@@ -861,11 +858,13 @@
     }
 
     .cta-heading {
-      font-size: clamp(2.4rem, 5.5vw, 5rem);
+      font-size: clamp(3.2rem, 7vw, 7.5rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
       color: #fff;
+      perspective: 800px;
+      transform-style: preserve-3d;
     }
 
     .cta-heading .cta-accent { color: #d4a0ff; }
@@ -950,8 +949,8 @@
         top: var(--nav-height);
         left: 0;
         right: 0;
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
+        background: rgba(10, 10, 10, 0.96);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         padding: 20px 20px 24px;
         flex-direction: column;
         align-items: flex-start;
@@ -971,17 +970,13 @@
 
       .nav-links li {
         width: 100%;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .nav-links a {
         display: block;
         padding: 14px 0;
         font-size: 16px;
-      }
-
-      .nav-links a::after {
-        display: none;
       }
 
       .nav-actions {
@@ -997,18 +992,6 @@
         display: none;
       }
     }
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.reveal-up    { transform: translateY(32px); }
-    .reveal.reveal-scale { transform: scale(0.94) translateY(20px); }
-    .reveal.reveal-left  { transform: translateX(-40px); }
-    .reveal.is-visible   { opacity: 1; transform: none; }
-    .delay-1 { transition-delay: 0.1s; }
-    .delay-2 { transition-delay: 0.2s; }
-    .delay-3 { transition-delay: 0.3s; }
 
     /* ── FOOTER ── */
     footer {
@@ -1068,7 +1051,7 @@
       <div class="hero-badge">London-based nail artist</div>
 
       <h1 class="hero-heading">
-        Nails that make you<br>
+        <span class="hero-text-main">Nails that make you</span><br>
         <span class="glitch">stop scrolling</span>
       </h1>
 
@@ -1097,7 +1080,7 @@
        data-decimals: decimal places to show during count (default 0)
        Leave data-count absent for a static (non-animated) number.
   ════════════════════════════════════════════════ -->
-  <div class="stats-bar reveal reveal-up" id="statsBar">
+  <div class="stats-bar" id="statsBar">
 
     <div class="stat">
       <span class="stat-number" data-count="2.4" data-suffix="M" data-decimals="1">2.4M</span>
@@ -1133,7 +1116,7 @@
          gradient stop colours, data-src (future video URL), views,
          and title. The drag-scroll JS is automatic.
     ──────────────────────────────────────────────────────────── -->
-    <section id="videos" class="videos-section reveal reveal-up">
+    <section id="videos" class="videos-section">
 
       <div class="videos-header">
         <span class="videos-label">Videos</span>
@@ -1233,7 +1216,7 @@
 
     <section id="collabs" class="collabs-section">
 
-      <div class="collabs-header reveal reveal-left">
+      <div class="collabs-header">
         <h2 class="collabs-heading">Brand collaborations</h2>
         <span class="collabs-sub">Selected partnerships</span>
       </div>
@@ -1241,7 +1224,7 @@
       <div class="collabs-grid">
 
         <!-- Card 1 -->
-        <div class="collab-card reveal reveal-up delay-1">
+        <div class="collab-card">
           <div class="collab-card-top">
             <div class="collab-logo" style="background:#f0e6ff; color:#7c3aed;">OPI</div>
             <div class="collab-brand-info">
@@ -1260,7 +1243,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="collab-card reveal reveal-up delay-2">
+        <div class="collab-card">
           <div class="collab-card-top">
             <div class="collab-logo" style="background:#fce7f3; color:#be185d;">NC</div>
             <div class="collab-brand-info">
@@ -1279,7 +1262,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="collab-card reveal reveal-up delay-3">
+        <div class="collab-card">
           <div class="collab-card-top">
             <div class="collab-logo" style="background:#e0f2fe; color:#0369a1;">GL</div>
             <div class="collab-brand-info">
@@ -1308,18 +1291,18 @@
     ─────────────────────────────────────────────────────────────────── -->
     <section id="work" class="work-section">
 
-      <div class="work-header reveal reveal-up">
+      <div class="work-header">
         <span class="work-section-label">Selected work</span>
         <a class="work-view-all" href="#">View all →</a>
       </div>
 
-      <div class="ticker-wrap reveal reveal-up">
+      <div class="ticker-wrap">
         <div class="ticker-track">
           <span class="ticker-copy">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span><span class="ticker-copy" aria-hidden="true">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span>
         </div>
       </div>
 
-      <div class="work-content reveal reveal-scale">
+      <div class="work-content">
 
         <div class="work-main-grid">
 
@@ -1384,7 +1367,7 @@
     </section>
 
     <div id="contact" class="cta-outer">
-      <div class="cta-section reveal reveal-up">
+      <div class="cta-section">
 
         <div class="cta-ghost" aria-hidden="true">
           <span class="cta-ghost-text">NIKKI PANIC</span>
@@ -1400,7 +1383,7 @@
     </div>
   </main>
 
-  <footer class="reveal reveal-up">
+  <footer>
     <span>© 2024 Nikki Panic. All rights reserved.</span>
     <nav class="footer-links">
       <a href="https://www.tiktok.com/@nikkipanic" target="_blank" rel="noopener">@nikkipanic</a>
@@ -1408,6 +1391,10 @@
       <a href="https://www.instagram.com/nikkipanic" target="_blank" rel="noopener">Instagram</a>
     </nav>
   </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
 
   <script>
     const toggle = document.getElementById('navToggle');
@@ -1504,21 +1491,140 @@
       targets.forEach(el => observer.observe(el));
     })();
 
-    // ── SCROLL REVEAL ────────────────────────────────────────────
-    (function () {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-      );
+    // ── GSAP ANIMATIONS ──────────────────────────────────────────
+    // All GSAP code is gated on prefers-reduced-motion
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.registerPlugin(ScrollTrigger);
 
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      // ── SCROLL REVEAL (replaces IntersectionObserver) ──────────
+      const revealUp = [
+        '#statsBar', '.videos-section', '.work-header',
+        '.ticker-wrap', '.work-content', 'footer'
+      ];
+      revealUp.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        gsap.from(el, {
+          opacity: 0, y: 40, duration: 0.85, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+        });
+      });
+
+      gsap.from('.collabs-header', {
+        opacity: 0, x: -50, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: '.collabs-header', start: 'top 85%', toggleActions: 'play none none none' }
+      });
+
+      gsap.from('.collab-card', {
+        opacity: 0, y: 50, duration: 0.8, ease: 'power3.out', stagger: 0.12,
+        scrollTrigger: { trigger: '.collabs-grid', start: 'top 82%', toggleActions: 'play none none none' }
+      });
+
+      gsap.from('.cta-section', {
+        opacity: 0, y: 30, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: '.cta-section', start: 'top 80%', toggleActions: 'play none none none' }
+      });
+
+      // ── PARALLAX ───────────────────────────────────────────────
+      gsap.to('.hero-right video', {
+        yPercent: -18, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.2 }
+      });
+      gsap.to('.hero-left', {
+        yPercent: -8, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.8 }
+      });
+      gsap.to('.hero-badge', {
+        y: -30, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+      });
+      gsap.to('.collab-card', {
+        y: -20, ease: 'none', stagger: 0.08,
+        scrollTrigger: { trigger: '.collabs-section', start: 'top bottom', end: 'bottom top', scrub: 1.8 }
+      });
+      gsap.to('.work-main-grid .work-item:nth-child(odd)', {
+        y: -25, ease: 'none',
+        scrollTrigger: { trigger: '.work-section', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+      });
+      gsap.to('.work-main-grid .work-item:nth-child(even)', {
+        y: 25, ease: 'none',
+        scrollTrigger: { trigger: '.work-section', start: 'top bottom', end: 'bottom top', scrub: 2.2 }
+      });
+      gsap.to('.cta-ghost-text', {
+        xPercent: -6, ease: 'none',
+        scrollTrigger: { trigger: '.cta-section', start: 'top bottom', end: 'bottom top', scrub: 2.5 }
+      });
+
+      // ── LETTER EXPLOSION ───────────────────────────────────────
+      function initLetterExplosion(selector, stConfig) {
+        document.querySelectorAll(selector).forEach(el => {
+          const split = new SplitType(el, { types: 'chars' });
+          gsap.from(split.chars, {
+            duration: 0.9,
+            x: () => (Math.random() - 0.5) * 600,
+            y: () => (Math.random() - 0.5) * 400,
+            z: () => Math.random() * -800,
+            opacity: 0,
+            rotationX: () => (Math.random() - 0.5) * 180,
+            rotationZ: () => (Math.random() - 0.5) * 60,
+            scale: () => Math.random() * 2 + 0.2,
+            ease: 'power4.out',
+            stagger: { each: 0.03, from: 'random' },
+            scrollTrigger: stConfig ? { trigger: el, ...stConfig } : null
+          });
+        });
+      }
+
+      // Hero fires on load; collabs & CTA fire on scroll
+      initLetterExplosion('.hero-text-main', null);
+      initLetterExplosion('.collabs-heading', { start: 'top 80%', toggleActions: 'play none none none' });
+      initLetterExplosion('.cta-heading',     { start: 'top 75%', toggleActions: 'play none none none' });
+    }
+
+    // ── NAV SCRAMBLE ─────────────────────────────────────────────
+    // Runs regardless of reduced-motion (it's interaction-driven, not auto)
+    (function () {
+      const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&';
+      const DURATION = 500;
+      const FRAME_MS = 40;
+      const SETTLE = 0.55;
+
+      function scramble(el) {
+        const original = el.dataset.original || el.textContent;
+        el.dataset.original = original;
+        const len = original.length;
+        let startTime = null;
+        let timerId;
+
+        function frame(ts) {
+          if (!startTime) startTime = ts;
+          const progress = Math.min((ts - startTime) / DURATION, 1);
+          const settled = progress > SETTLE
+            ? Math.floor((progress - SETTLE) / (1 - SETTLE) * len)
+            : 0;
+          let out = '';
+          for (let i = 0; i < len; i++) {
+            if (i < settled || original[i] === ' ') {
+              out += original[i];
+            } else {
+              out += CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+          }
+          el.textContent = out;
+          if (progress < 1) {
+            timerId = setTimeout(() => requestAnimationFrame(frame), FRAME_MS);
+          } else {
+            el.textContent = original;
+          }
+        }
+
+        clearTimeout(timerId);
+        requestAnimationFrame(frame);
+      }
+
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('mouseenter', () => scramble(link));
+      });
     })();
   </script>
 
