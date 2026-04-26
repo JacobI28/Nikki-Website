@@ -67,10 +67,7 @@
       left: 0;
       right: 0;
       z-index: 200;
-      background: rgba(10, 10, 10, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: transparent;
       height: var(--nav-height);
       display: flex;
       align-items: center;
@@ -1147,7 +1144,7 @@
   </div>
 
   <section class="hero">
-    <video class="hero-video" src="hero.MP4" autoplay muted loop playsinline></video>
+    <video class="hero-video" src="hero.MP4" autoplay muted loop playsinline preload="auto"></video>
     <div class="hero-left">
       <h1 class="hero-heading">
         <span class="hero-text-main">Nails that make you </span><span class="hero-accent">stop scrolling</span>
@@ -1549,6 +1546,17 @@
       links.forEach(l => l.addEventListener('click', closeMenu));
       const cta = overlay.querySelector('.overlay-cta');
       if (cta) cta.addEventListener('click', closeMenu);
+    })();
+
+    // ── HERO VIDEO FORCE-PLAY ────────────────────────────────────
+    (function () {
+      const v = document.querySelector('.hero-video');
+      if (!v) return;
+      v.play().catch(() => {
+        // If autoplay blocked, play on first user interaction
+        document.addEventListener('touchstart', () => v.play(), { once: true });
+        document.addEventListener('click',      () => v.play(), { once: true });
+      });
     })();
 
     // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
