@@ -253,8 +253,8 @@
     .hero-left {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 100px 64px 100px 80px;
+      justify-content: flex-end;
+      padding: 100px 64px 64px 80px;
       gap: 28px;
       position: relative;
       z-index: 1;
@@ -298,24 +298,9 @@
       display: block;
     }
 
-    .hero-heading .glitch {
+    .hero-accent {
       color: #d4a0ff;
       display: inline-block;
-      position: relative;
-      animation: glitch-trigger 4s infinite;
-    }
-
-    @keyframes glitch-trigger {
-      0%, 88%  { animation-timing-function: step-end; }
-      88%      { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
-      88.5%    { clip-path: inset(20% 0 30% 0); transform: skewX(-12deg) translateX(-4px); color: #ff5ef7; text-shadow: 3px 0 0 #00e5ff; }
-      89%      { clip-path: inset(55% 0 10% 0); transform: skewX(8deg)  translateX(5px);  color: #00e5ff; text-shadow: -3px 0 0 #ff5ef7; }
-      89.5%    { clip-path: inset(10% 0 60% 0); transform: skewX(-6deg) translateX(-3px); color: #d4a0ff; text-shadow: 2px 0 0 #ff5ef7; }
-      90%      { clip-path: inset(40% 0 20% 0); transform: skewX(14deg) translateX(4px);  color: #ff5ef7; text-shadow: -2px 0 0 #00e5ff; }
-      90.5%    { clip-path: inset(0); transform: skewX(-2deg); color: #d4a0ff; text-shadow: none; }
-      91%      { clip-path: inset(30% 0 40% 0); transform: skewX(10deg) translateX(-5px); color: #00e5ff; text-shadow: 3px 0 0 #ff5ef7; }
-      91.5%    { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
-      100%     { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
     }
 
     .hero-desc {
@@ -384,7 +369,8 @@
       }
 
       .hero-left {
-        padding: 56px 20px 36px;
+        padding: 40px 20px 40px;
+        justify-content: flex-end;
       }
 
       .hero-right::before {
@@ -1094,11 +1080,9 @@
 
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-badge">London-based nail artist</div>
-
       <h1 class="hero-heading">
         <span class="hero-text-main">Nails that make you</span><br>
-        <span class="glitch">stop scrolling</span>
+        <span class="hero-accent">stop scrolling</span>
       </h1>
 
       <p class="hero-desc">
@@ -1596,9 +1580,8 @@
           ease: 'power4.inOut',
           onComplete: () => preloader.remove()
         }, '-=0.1')
-        .from('.hero-badge', { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.1')
-        .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.4')
-        .from('.glitch',         { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+        .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.1')
+        .from('.hero-accent',    { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.5')
         .from('.hero-desc',      { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.4')
         .from('.hero-scroll',    { opacity: 0, y: 16, duration: 0.5, ease: 'power3.out' }, '-=0.4');
     })();
