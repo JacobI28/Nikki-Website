@@ -1041,6 +1041,33 @@
         display: none;
       }
     }
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #999;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      color: #999;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--black); }
+
+    @media (max-width: 600px) {
+      footer { flex-direction: column; gap: 12px; text-align: center; padding: 20px; }
+    }
   </style>
 </head>
 <body>
@@ -1429,6 +1456,15 @@
       </div>
     </div>
   </main>
+
+  <footer>
+    <span>© 2024 Nikki Panic. All rights reserved.</span>
+    <nav class="footer-links">
+      <a href="https://www.tiktok.com/@nikkipanic" target="_blank" rel="noopener">@nikkipanic</a>
+      <a href="https://www.tiktok.com/@nikkipanic" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.instagram.com/nikkipanic" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+  </footer>
 
   <script>
     const toggle = document.getElementById('navToggle');
