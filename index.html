@@ -283,13 +283,19 @@
     }
 
     .hero-heading {
-      font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+      font-size: clamp(2.2rem, 6.5vw, 6.5rem);
       font-weight: 800;
       letter-spacing: -0.04em;
-      line-height: 1.0;
+      line-height: 1.1;
       color: #fff;
       perspective: 800px;
       transform-style: preserve-3d;
+    }
+
+    /* SplitType word wrappers — prevent mid-word line breaks */
+    .hero-heading .word {
+      display: inline-block;
+      white-space: nowrap;
     }
 
     .hero-text-main {
@@ -1607,7 +1613,7 @@
         const el = document.querySelector('.hero-text-main');
         if (!el) return;
 
-        const split = new SplitType(el, { types: 'chars' });
+        const split = new SplitType(el, { types: 'words, chars' });
 
         split.chars.forEach(char => {
           const speed = 0.3 + Math.random() * 1.5;
