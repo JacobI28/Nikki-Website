@@ -292,15 +292,15 @@
       pointer-events: none;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
       .hero {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 56vw;
+        grid-template-rows: auto 60vw;
         min-height: unset;
       }
 
       .hero-left {
-        padding: 64px 20px 40px;
+        padding: 56px 20px 36px;
       }
 
       .hero-right::before {
@@ -375,11 +375,11 @@
       }
 
       .stat {
-        padding: 28px 24px;
+        padding: 24px 20px;
       }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 480px) {
       .stats-bar {
         grid-template-columns: 1fr;
       }
@@ -704,15 +704,17 @@
       .work-bottom-grid { gap: 6px; margin-top: 6px; }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .work-main-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 220px repeat(2, 150px);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
         gap: 6px;
       }
-      .work-hero-item { grid-column: 1 / 3; grid-row: 1; }
-      .work-bottom-grid { grid-template-columns: repeat(2, 1fr); }
-      .work-bottom-grid .work-item:last-child { display: none; }
+      .work-main-grid .work-item { aspect-ratio: 16 / 9; }
+      .work-hero-item { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 3; }
+      .work-bottom-grid { grid-template-columns: 1fr; }
+      .work-bottom-grid .work-item { aspect-ratio: 16 / 9; }
+      .work-bottom-grid .work-item:last-child { display: block; }
     }
 
     /* ── BRAND COLLABORATIONS ── */
