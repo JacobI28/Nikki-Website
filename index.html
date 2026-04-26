@@ -715,6 +715,146 @@
       .work-bottom-grid .work-item:last-child { display: none; }
     }
 
+    /* ── BRAND COLLABORATIONS ── */
+    .collabs-section {
+      padding: 96px 64px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .collabs-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .collabs-heading {
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .collabs-sub {
+      font-size: 13px;
+      font-weight: 500;
+      color: #999;
+    }
+
+    .collabs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .collab-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .collab-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .collab-card-top {
+      padding: 24px 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .collab-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      flex-shrink: 0;
+    }
+
+    .collab-brand-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .collab-brand-name {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--black);
+    }
+
+    .collab-type {
+      font-size: 12px;
+      font-weight: 500;
+      color: #999;
+      letter-spacing: 0.01em;
+    }
+
+    .collab-img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+    }
+
+    .collab-body {
+      padding: 20px 24px 0;
+      flex: 1;
+    }
+
+    .collab-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #555;
+    }
+
+    .collab-footer {
+      margin: 20px 24px 0;
+      padding: 16px 0 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .collab-reach {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: 0.01em;
+    }
+
+    .collab-reach span {
+      font-weight: 500;
+      color: #999;
+      margin-left: 4px;
+    }
+
+    .collab-year {
+      font-size: 12px;
+      font-weight: 600;
+      color: #bbb;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 900px) {
+      .collabs-section { padding: 72px 20px; }
+      .collabs-grid { grid-template-columns: 1fr; gap: 16px; max-width: 480px; }
+    }
+
+    @media (max-width: 600px) {
+      .collabs-grid { max-width: none; }
+    }
+
     /* ── PLACEHOLDER SECTIONS ── */
     main {
       min-height: calc(100vh - var(--nav-height));
@@ -1106,9 +1246,74 @@
       </div>
     </section>
 
-    <section id="collabs">
-      <h2>Collabs</h2>
-      <p>Collaboration projects coming soon.</p>
+    <section id="collabs" class="collabs-section">
+
+      <div class="collabs-header">
+        <h2 class="collabs-heading">Brand collaborations</h2>
+        <span class="collabs-sub">Selected partnerships</span>
+      </div>
+
+      <div class="collabs-grid">
+
+        <!-- Card 1 -->
+        <div class="collab-card">
+          <div class="collab-card-top">
+            <div class="collab-logo" style="background:#f0e6ff; color:#7c3aed;">OPI</div>
+            <div class="collab-brand-info">
+              <span class="collab-brand-name">OPI</span>
+              <span class="collab-type">Product campaign</span>
+            </div>
+          </div>
+          <div class="collab-img" style="background: linear-gradient(135deg, #f0e6ff 0%, #c4b5fd 50%, #7c3aed 100%)"></div>
+          <div class="collab-body">
+            <p class="collab-desc">Created a full editorial look using OPI's Infinite Shine collection for their autumn launch campaign, reaching a combined 4.2M impressions across TikTok and Instagram.</p>
+          </div>
+          <div class="collab-footer">
+            <span class="collab-reach">4.2M <span>reach</span></span>
+            <span class="collab-year">2024</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="collab-card">
+          <div class="collab-card-top">
+            <div class="collab-logo" style="background:#fce7f3; color:#be185d;">NC</div>
+            <div class="collab-brand-info">
+              <span class="collab-brand-name">NAILCHAMP</span>
+              <span class="collab-type">Ambassador &amp; tutorial series</span>
+            </div>
+          </div>
+          <div class="collab-img" style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 40%, #ec4899 100%)"></div>
+          <div class="collab-body">
+            <p class="collab-desc">Ongoing brand ambassador partnership producing six-part tutorial series showcasing next-generation gel formulas to an engaged community of nail artists.</p>
+          </div>
+          <div class="collab-footer">
+            <span class="collab-reach">1.8M <span>reach</span></span>
+            <span class="collab-year">2023–24</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="collab-card">
+          <div class="collab-card-top">
+            <div class="collab-logo" style="background:#e0f2fe; color:#0369a1;">GL</div>
+            <div class="collab-brand-info">
+              <span class="collab-brand-name">GLAIZE</span>
+              <span class="collab-type">Capsule collection</span>
+            </div>
+          </div>
+          <div class="collab-img" style="background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 40%, #0369a1 100%)"></div>
+          <div class="collab-body">
+            <p class="collab-desc">Co-designed a limited eight-shade capsule collection inspired by London street culture, sold out within 48 hours of launch with viral unboxing coverage.</p>
+          </div>
+          <div class="collab-footer">
+            <span class="collab-reach">920K <span>reach</span></span>
+            <span class="collab-year">2024</span>
+          </div>
+        </div>
+
+      </div>
+
     </section>
 
     <section id="contact">
