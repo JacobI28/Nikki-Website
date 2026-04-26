@@ -353,6 +353,79 @@
       .hero-left { padding: 40px 20px 40px; gap: 22px; }
     }
 
+    /* ── ABOUT / DESCRIPTION ── */
+    .about-section {
+      padding: 80px 80px 88px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+    }
+
+    .about-text {
+      font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+      line-height: 1.65;
+      color: #333;
+      max-width: 560px;
+    }
+
+    /* Circular "About Me" button — Bettina-style magnetic circle */
+    .about-btn {
+      flex-shrink: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: #0a0a0a;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    /* Expanding fill on hover */
+    .about-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #d4a0ff;
+      transform: scale(0);
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .about-btn:hover::before {
+      transform: scale(1);
+    }
+
+    .about-btn-text {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .about-btn:hover .about-btn-text {
+      color: #0a0a0a;
+    }
+
+    @media (max-width: 768px) {
+      .about-section { padding: 56px 24px 64px; }
+      .about-inner { flex-direction: column; align-items: flex-start; gap: 36px; }
+      .about-btn { width: 120px; height: 120px; }
+    }
+
     /* ── STATS BAR ── */
     .stats-bar {
       display: grid;
@@ -1051,18 +1124,6 @@
       <h1 class="hero-heading">
         <span class="hero-text-main">Nails that make you </span><span class="hero-accent">stop scrolling</span>
       </h1>
-
-      <p class="hero-desc">
-        Editorial, avant-garde, and wearable nail art crafted for creatives,
-        brands, and anyone who treats their hands as a canvas.
-      </p>
-
-      <div class="hero-scroll">
-        <span>Scroll</span>
-        <svg class="hero-scroll-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="4 7 10 13 16 7"/>
-        </svg>
-      </div>
     </div>
 
   </section>
@@ -1101,6 +1162,19 @@
       <span class="stat-platform">Combined reach</span>
     </div>
 
+  </div>
+
+  <!-- ── ABOUT / DESCRIPTION ── -->
+  <div class="about-section">
+    <div class="about-inner">
+      <p class="about-text">
+        Editorial, avant-garde, and wearable nail art crafted for creatives,
+        brands, and anyone who treats their hands as a canvas.
+      </p>
+      <a class="about-btn" href="#contact" aria-label="About Me">
+        <span class="about-btn-text">About Me</span>
+      </a>
+    </div>
   </div>
 
   <main>
@@ -1545,15 +1619,13 @@
           onComplete: () => preloader.remove()
         }, '-=0.1')
         .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.1')
-        .from('.hero-accent',    { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .from('.hero-desc',      { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-        .from('.hero-scroll',    { opacity: 0, y: 16, duration: 0.5, ease: 'power3.out' }, '-=0.4');
+        .from('.hero-accent',    { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.5');
     })();
 
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
       // ── SCROLL REVEAL ─────────────────────────────────────────
-      ['#statsBar', '.videos-section', '.work-header', '.ticker-wrap', '.work-content', 'footer']
+      ['.about-section', '#statsBar', '.videos-section', '.work-header', '.ticker-wrap', '.work-content', 'footer']
         .forEach(sel => {
           const el = document.querySelector(sel);
           if (!el) return;
@@ -1646,7 +1718,7 @@
         });
         el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
       }
-      document.querySelectorAll('#menuBtn, .cta-btn, .overlay-cta').forEach(initMagnetic);
+      document.querySelectorAll('#menuBtn, .cta-btn, .overlay-cta, .about-btn').forEach(initMagnetic);
 
     }
 
