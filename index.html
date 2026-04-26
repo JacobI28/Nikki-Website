@@ -246,9 +246,12 @@
       background: #0a0a0a;
       min-height: calc(100vh - var(--nav-height));
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .hero-left {
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -343,16 +346,11 @@
     }
 
     @media (max-width: 768px) {
-      .hero-left {
-        padding: 40px 20px 40px;
-      }
+      .hero-left { padding: 40px 24px 48px; }
     }
 
     @media (max-width: 480px) {
-      .hero-left {
-        padding: 40px 20px 36px;
-        gap: 22px;
-      }
+      .hero-left { padding: 40px 20px 40px; gap: 22px; }
     }
 
     /* ── STATS BAR ── */
@@ -1607,17 +1605,20 @@
       });
 
       // ── HERO LETTER SCATTER (Bettina technique) ─────────────
-      // Each char gets a random speed. Slow chars drift down as you scroll;
-      // fast chars shoot up. Bidirectional — scrubbing back re-assembles them.
+      // Applied to both text spans. Tighter speed range = less aggressive.
       (function () {
-        const el = document.querySelector('.hero-text-main');
-        if (!el) return;
+        const els = document.querySelectorAll('.hero-text-main, .hero-accent');
+        if (!els.length) return;
 
-        const split = new SplitType(el, { types: 'words, chars' });
+        const allChars = [];
+        els.forEach(el => {
+          const split = new SplitType(el, { types: 'words, chars' });
+          allChars.push(...split.chars);
+        });
 
-        split.chars.forEach(char => {
-          const speed = 0.3 + Math.random() * 1.5;
-          const rot   = (Math.random() - 0.5) * 100;
+        allChars.forEach(char => {
+          const speed = 0.65 + Math.random() * 0.6;
+          const rot   = (Math.random() - 0.5) * 45;
 
           gsap.to(char, {
             y:        () => (1 - speed) * ScrollTrigger.maxScroll(window),
