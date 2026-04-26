@@ -1555,30 +1555,40 @@
         scrollTrigger: { trigger: '.cta-section', start: 'top bottom', end: 'bottom top', scrub: 2.5 }
       });
 
-      // ── LETTER EXPLOSION ───────────────────────────────────────
-      function initLetterExplosion(selector, stConfig) {
-        document.querySelectorAll(selector).forEach(el => {
-          const split = new SplitType(el, { types: 'chars' });
-          gsap.from(split.chars, {
-            duration: 0.9,
-            x: () => (Math.random() - 0.5) * 600,
-            y: () => (Math.random() - 0.5) * 400,
-            z: () => Math.random() * -800,
-            opacity: 0,
-            rotationX: () => (Math.random() - 0.5) * 180,
-            rotationZ: () => (Math.random() - 0.5) * 60,
-            scale: () => Math.random() * 2 + 0.2,
-            ease: 'power4.out',
-            stagger: { each: 0.03, from: 'random' },
-            scrollTrigger: stConfig ? { trigger: el, ...stConfig } : null
-          });
-        });
-      }
+      // ── HERO LETTER SCATTER (scroll-scrubbed, bidirectional) ───
+      // Letters start normal; scatter as you scroll the hero out,
+      // and re-assemble when you scroll back up.
+      (function () {
+        const el = document.querySelector('.hero-text-main');
+        if (!el) return;
 
-      // Hero fires on load; collabs & CTA fire on scroll
-      initLetterExplosion('.hero-text-main', null);
-      initLetterExplosion('.collabs-heading', { start: 'top 80%', toggleActions: 'play none none none' });
-      initLetterExplosion('.cta-heading',     { start: 'top 75%', toggleActions: 'play none none none' });
+        const split = new SplitType(el, { types: 'chars' });
+        const chars = split.chars;
+
+        // Pre-compute targets once — scrub must not re-randomise each frame
+        const rx = chars.map(() => (Math.random() - 0.5) * 700);
+        const ry = chars.map(() => (Math.random() - 0.5) * 500);
+        const rr = chars.map(() => (Math.random() - 0.5) * 180);
+        const rs = chars.map(() => Math.random() * 2 + 0.2);
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.2,
+          }
+        });
+
+        chars.forEach((char, i) => {
+          tl.to(char, {
+            x: rx[i], y: ry[i], rotation: rr[i], scale: rs[i],
+            opacity: 0,
+            ease: 'power1.in',
+            duration: 1,
+          }, i * 0.012);  // slight stagger offset — wave feel, not simultaneous
+        });
+      })();
     }
 
     // ── NAV SCRAMBLE ─────────────────────────────────────────────
