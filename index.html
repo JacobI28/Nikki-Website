@@ -380,16 +380,14 @@
 
     /* ── ABOUT / DESCRIPTION ── */
     .about-section {
-      padding: 80px 80px 88px;
+      padding: 80px 0 0;
       background: var(--white);
       border-bottom: 1px solid var(--border);
+      overflow: hidden;
     }
 
-    .about-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 48px;
+    .about-text-wrap {
+      padding: 0 80px 56px;
     }
 
     .about-text {
@@ -399,10 +397,13 @@
       max-width: 560px;
     }
 
-    /* Circular "About Me" button — Bettina-style magnetic circle */
+    /* Full-width track the button rolls along */
+    .about-btn-track {
+      padding-bottom: 64px;
+    }
+
+    /* Circular rolling button */
     .about-btn {
-      flex-shrink: 0;
-      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -414,9 +415,10 @@
       text-decoration: none;
       cursor: pointer;
       overflow: hidden;
+      position: relative;
+      will-change: transform;
     }
 
-    /* Expanding fill on hover */
     .about-btn::before {
       content: '';
       position: absolute;
@@ -427,9 +429,7 @@
       transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
     }
 
-    .about-btn:hover::before {
-      transform: scale(1);
-    }
+    .about-btn:hover::before { transform: scale(1); }
 
     .about-btn-text {
       position: relative;
@@ -441,14 +441,11 @@
       transition: color 0.3s;
     }
 
-    .about-btn:hover .about-btn-text {
-      color: #0a0a0a;
-    }
+    .about-btn:hover .about-btn-text { color: #0a0a0a; }
 
     @media (max-width: 768px) {
-      .about-section { padding: 56px 24px 64px; }
-      .about-inner { flex-direction: column; align-items: flex-end; gap: 36px; }
-      .about-btn { width: 120px; height: 120px; }
+      .about-text-wrap { padding: 0 24px 40px; }
+      .about-btn { width: 110px; height: 110px; }
     }
 
     /* ── STATS BAR ── */
@@ -1199,11 +1196,13 @@
 
   <!-- ── ABOUT / DESCRIPTION ── -->
   <div class="about-section">
-    <div class="about-inner">
+    <div class="about-text-wrap">
       <p class="about-text">
         Editorial, avant-garde, and wearable nail art crafted for creatives,
         brands, and anyone who treats their hands as a canvas.
       </p>
+    </div>
+    <div class="about-btn-track">
       <a class="about-btn" href="#contact" aria-label="About Me">
         <span class="about-btn-text">About Me</span>
       </a>
@@ -1762,7 +1761,32 @@
         });
         el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
       }
-      document.querySelectorAll('#menuBtn, .cta-btn, .overlay-cta, .about-btn').forEach(initMagnetic);
+      document.querySelectorAll('#menuBtn, .cta-btn, .overlay-cta').forEach(initMagnetic);
+
+      // ── ABOUT BUTTON ROLL ─────────────────────────────────────
+      // Button rolls left→right as you scroll through the section.
+      // Rotation matches the physics of a circle rolling that distance.
+      (function () {
+        const btn   = document.querySelector('.about-btn');
+        const track = document.querySelector('.about-btn-track');
+        if (!btn || !track) return;
+
+        gsap.to(btn, {
+          x: () => track.offsetWidth - btn.offsetWidth,
+          rotation: () => {
+            const dist = track.offsetWidth - btn.offsetWidth;
+            return dist / (btn.offsetWidth / 2) * (180 / Math.PI);
+          },
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.about-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          }
+        });
+      })();
 
     }
 
