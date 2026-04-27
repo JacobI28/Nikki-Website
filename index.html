@@ -6,7 +6,7 @@
   <title>Nikki Panic — Nail Artist</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -314,9 +314,9 @@
     }
 
     .hero-heading {
-      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(3.8rem, 10vw, 11rem);
-      font-weight: 300;
+      font-weight: 700;
       font-style: italic;
       letter-spacing: 0.01em;
       line-height: 1.0;
@@ -1641,10 +1641,14 @@
     })();
 
     // ── GSAP ANIMATIONS ──────────────────────────────────────────
+    // Always start at the very top — prevents browser scroll restoration
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
     gsap.registerPlugin(ScrollTrigger);
 
     // ── LENIS SMOOTH SCROLL ──────────────────────────────────────
-    const lenis = new Lenis();
+    const lenis = new Lenis({ duration: 1.2 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => { lenis.raf(time * 1000); });
     gsap.ticker.lagSmoothing(0);
@@ -1737,8 +1741,8 @@
         });
 
         allChars.forEach(char => {
-          const speed = 0.65 + Math.random() * 0.6;
-          const rot   = (Math.random() - 0.5) * 45;
+          const speed = 0.82 + Math.random() * 0.28;
+          const rot   = (Math.random() - 0.5) * 15;
 
           gsap.to(char, {
             y:        () => (1 - speed) * ScrollTrigger.maxScroll(window),
