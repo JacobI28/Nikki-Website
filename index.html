@@ -788,6 +788,7 @@
     @media (max-width: 900px) {
       .work-header { padding: 48px 20px 36px; }
       .work-content { padding: 0 12px; }
+      .work-main-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ── BRAND COLLABORATIONS ── */
@@ -1724,14 +1725,7 @@
         y: -20, ease: 'none', stagger: 0.08,
         scrollTrigger: { trigger: '.collabs-section', start: 'top bottom', end: 'bottom top', scrub: 1.8 }
       });
-      gsap.to('.work-main-grid .work-item:nth-child(odd)', {
-        y: -25, ease: 'none',
-        scrollTrigger: { trigger: '.work-section', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
-      });
-      gsap.to('.work-main-grid .work-item:nth-child(even)', {
-        y: 25, ease: 'none',
-        scrollTrigger: { trigger: '.work-section', start: 'top bottom', end: 'bottom top', scrub: 2.2 }
-      });
+
       gsap.to('.cta-ghost-text', {
         xPercent: -6, ease: 'none',
         scrollTrigger: { trigger: '.cta-section', start: 'top bottom', end: 'bottom top', scrub: 2.5 }
