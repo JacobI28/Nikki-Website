@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nikki Panic — Nail Artist</title>
+  <script>
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+    window.addEventListener('pageshow', function(e) { if (e.persisted) window.scrollTo(0, 0); });
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -28,15 +37,47 @@
       background: var(--white);
       color: var(--black);
       -webkit-font-smoothing: antialiased;
+      padding-top: var(--nav-height);
+      overflow-x: hidden;
+    }
+
+    /* ── PRELOADER ── */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .preloader-word {
+      overflow: hidden;
+    }
+
+    .preloader-text {
+      font-size: clamp(2.4rem, 7vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #fff;
+      display: block;
+      transform: translateY(110%);
+    }
+
+    .preloader-accent {
+      color: #d4a0ff;
     }
 
     /* ── NAV ── */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 100;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: transparent;
       height: var(--nav-height);
       display: flex;
       align-items: center;
@@ -45,73 +86,68 @@
 
     .nav-inner {
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      display: flex;
       align-items: center;
-      gap: 16px;
+      justify-content: space-between;
     }
 
-    /* Logo */
     .nav-logo {
-      justify-self: start;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.02em;
       text-decoration: none;
-      color: var(--black);
+      color: #fff;
       white-space: nowrap;
+      position: relative;
+      z-index: 201;
     }
 
-    /* Centre links */
-    .nav-links {
+    /* Menu / Close pill button */
+    .menu-btn {
+      position: relative;
+      z-index: 201;
+      height: 40px;
+      width: 90px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      overflow: hidden;
+      font-family: var(--font);
+    }
+
+    .menu-btn-slide {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .menu-btn.active .menu-btn-slide {
+      transform: translateY(-50%);
+    }
+
+    .menu-btn-slide span {
+      height: 40px;
       display: flex;
       align-items: center;
-      gap: 36px;
-      list-style: none;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      flex-shrink: 0;
     }
 
-    .nav-links a {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      color: var(--black);
-      position: relative;
-      transition: opacity 0.15s;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -3px;
-      width: 0;
-      height: 1px;
-      background: var(--black);
-      transition: width 0.2s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-links a:hover {
-      opacity: 0.6;
-    }
-
-    /* Book now */
-    .nav-actions {
-      justify-self: end;
-    }
-
+    /* Book now (used in overlay) */
     .btn-book {
       display: inline-block;
       padding: 9px 22px;
-      background: var(--black);
-      color: var(--white);
+      background: #d4a0ff;
+      color: #0a0a0a;
       font-family: var(--font);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.02em;
       text-decoration: none;
       border-radius: 100px;
@@ -122,7 +158,7 @@
     }
 
     .btn-book:hover {
-      background: #222;
+      background: #c084ff;
       transform: translateY(-1px);
     }
 
@@ -130,56 +166,135 @@
       transform: translateY(0);
     }
 
-    /* Mobile nav toggle */
-    .nav-toggle {
-      display: none;
+    /* ── OVERLAY MENU ── */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+      clip-path: inset(0 0 100% 0);
+      pointer-events: none;
+    }
+
+    .nav-overlay.active {
+      pointer-events: all;
+    }
+
+    .overlay-inner {
+      width: 100%;
+      display: flex;
       flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      justify-self: end;
+      gap: 52px;
     }
 
-    .nav-toggle span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--black);
-      transition: transform 0.25s, opacity 0.25s;
-      transform-origin: center;
+    .overlay-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .nav-toggle.open span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
+    .overlay-link {
+      overflow: hidden;
+      perspective: 300px;
     }
 
-    .nav-toggle.open span:nth-child(2) {
-      opacity: 0;
+    .overlay-link a {
+      display: inline-block;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #fff;
+      text-decoration: none;
+      line-height: 1.1;
+      transition: color 0.2s;
     }
 
-    .nav-toggle.open span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+    .overlay-link a:hover {
+      color: #d4a0ff;
+    }
+
+    .overlay-footer {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .overlay-socials {
+      display: flex;
+      gap: 24px;
+    }
+
+    .overlay-socials a {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .overlay-socials a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-overlay { padding: 0 24px; }
+      .overlay-inner { gap: 36px; }
+      .overlay-link a { font-size: clamp(2.2rem, 9vw, 3.8rem); }
     }
 
     /* ── HERO ── */
     .hero {
       background: #0a0a0a;
-      min-height: calc(100vh - var(--nav-height));
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      overflow: hidden;
+      min-height: 100vh;
+      max-width: none;
+      padding: 0;
+      margin: calc(-1 * var(--nav-height)) 0 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      z-index: 0;
+    }
+
+    /* Dark gradient overlay so text stays legible */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.94) 0%,
+        rgba(0, 0, 0, 0.72) 50%,
+        rgba(0, 0, 0, 0.55) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
     }
 
     .hero-left {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 80px 56px 80px 64px;
+      justify-content: flex-end;
+      padding: 100px 64px 24px 80px;
       gap: 28px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .hero-badge {
@@ -207,31 +322,25 @@
     }
 
     .hero-heading {
-      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.2rem, 5vw, 6rem);
+      font-weight: 700;
+      font-style: normal;
+      letter-spacing: 0.01em;
+      line-height: 1.0;
+      color: #fff;
+      perspective: 800px;
+      transform-style: preserve-3d;
+    }
+
+    .hero-text-main {
+      display: inline-block;
       color: #fff;
     }
 
-    .hero-heading .glitch {
+    .hero-accent {
       color: #d4a0ff;
-      display: inline;
-      position: relative;
-      animation: glitch-trigger 4s infinite;
-    }
-
-    @keyframes glitch-trigger {
-      0%, 88%  { animation-timing-function: step-end; }
-      88%      { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
-      88.5%    { clip-path: inset(20% 0 30% 0); transform: skewX(-12deg) translateX(-4px); color: #ff5ef7; text-shadow: 3px 0 0 #00e5ff; }
-      89%      { clip-path: inset(55% 0 10% 0); transform: skewX(8deg)  translateX(5px);  color: #00e5ff; text-shadow: -3px 0 0 #ff5ef7; }
-      89.5%    { clip-path: inset(10% 0 60% 0); transform: skewX(-6deg) translateX(-3px); color: #d4a0ff; text-shadow: 2px 0 0 #ff5ef7; }
-      90%      { clip-path: inset(40% 0 20% 0); transform: skewX(14deg) translateX(4px);  color: #ff5ef7; text-shadow: -2px 0 0 #00e5ff; }
-      90.5%    { clip-path: inset(0); transform: skewX(-2deg); color: #d4a0ff; text-shadow: none; }
-      91%      { clip-path: inset(30% 0 40% 0); transform: skewX(10deg) translateX(-5px); color: #00e5ff; text-shadow: 3px 0 0 #ff5ef7; }
-      91.5%    { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
-      100%     { clip-path: inset(0); transform: none; color: #d4a0ff; text-shadow: none; }
+      display: inline-block;
     }
 
     .hero-desc {
@@ -269,50 +378,86 @@
       50%       { transform: translateY(7px); }
     }
 
-    /* Right column */
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-right video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* Gradient fade over left edge of video */
-    .hero-right::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right, #0a0a0a 0%, #0a0a0a 4%, transparent 38%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
     @media (max-width: 768px) {
-      .hero {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 60vw;
-        min-height: unset;
-      }
-
-      .hero-left {
-        padding: 56px 20px 36px;
-      }
-
-      .hero-right::before {
-        background: linear-gradient(to bottom, #0a0a0a 0%, transparent 30%);
-      }
+      .hero-left { padding: 40px 24px 20px; }
     }
 
     @media (max-width: 480px) {
-      .hero-left {
-        padding: 48px 20px 36px;
-        gap: 22px;
-      }
+      .hero-left { padding: 40px 20px 16px; gap: 22px; }
+    }
+
+    /* ── ABOUT / DESCRIPTION ── */
+    .about-section {
+      padding: 80px 0 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .about-text-wrap {
+      padding: 0 80px 56px;
+    }
+
+    .about-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.5rem, 2.8vw, 2.6rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.4;
+      color: #333;
+      max-width: 700px;
+    }
+
+    /* Full-width track the button rolls along */
+    .about-btn-track {
+      padding-bottom: 64px;
+    }
+
+    /* Circular rolling button */
+    .about-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: #0a0a0a;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      will-change: transform;
+    }
+
+    .about-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #d4a0ff;
+      transform: scale(0);
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .about-btn:hover::before { transform: scale(1); }
+
+    .about-btn-text {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      transform: rotate(180deg);
+    }
+
+    .about-btn:hover .about-btn-text { color: #0a0a0a; }
+
+    @media (max-width: 768px) {
+      .about-text-wrap { padding: 0 24px 40px; }
+      .about-btn { width: 110px; height: 110px; }
     }
 
     /* ── STATS BAR ── */
@@ -327,16 +472,13 @@
       padding: 36px 40px;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      text-align: center;
       gap: 6px;
-      border-right: 1px solid var(--border);
-    }
-
-    .stat:last-child {
-      border-right: none;
     }
 
     .stat-number {
-      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-size: clamp(2.4rem, 3.8vw, 4rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1;
@@ -365,15 +507,6 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .stat:nth-child(2) {
-        border-right: none;
-      }
-
-      .stat:nth-child(1),
-      .stat:nth-child(2) {
-        border-bottom: 1px solid var(--border);
-      }
-
       .stat {
         padding: 24px 20px;
       }
@@ -381,22 +514,13 @@
 
     @media (max-width: 480px) {
       .stats-bar {
-        grid-template-columns: 1fr;
-      }
-
-      .stat {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .stat:last-child {
-        border-bottom: none;
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
     /* ── VIDEOS SECTION ── */
     .videos-section {
-      padding: 80px 0;
+      padding: 48px 0;
       background: var(--white);
       border-bottom: 1px solid var(--border);
       overflow: hidden;
@@ -461,7 +585,7 @@
     .videos-track { scrollbar-width: none; -ms-overflow-style: none; }
 
     .video-card {
-      flex: 0 0 180px;
+      flex: 0 0 260px;
       scroll-snap-align: start;
       display: flex;
       flex-direction: column;
@@ -471,7 +595,7 @@
 
     .video-thumb {
       position: relative;
-      width: 180px;
+      width: 260px;
       aspect-ratio: 9 / 16;
       border-radius: 12px;
       overflow: hidden;
@@ -525,11 +649,11 @@
     }
 
     .video-title {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       line-height: 1.4;
       color: var(--black);
-      max-width: 180px;
+      max-width: 260px;
     }
 
     @media (max-width: 768px) {
@@ -539,7 +663,12 @@
       }
 
       .videos-track {
-        padding: 4px 20px 20px;
+        padding: 4px 0 20px;
+      }
+      .videos-track::before,
+      .videos-track::after {
+        content: '';
+        flex: 0 0 24px;
       }
     }
 
@@ -613,21 +742,11 @@
 
     .work-main-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, 226px);
-      gap: 8px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
 
-    .work-hero-item { grid-row: 1 / 3; }
-
-    .work-bottom-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .work-bottom-grid .work-item { aspect-ratio: 1 / 1; }
+    .work-main-grid .work-item { aspect-ratio: 4 / 5; }
 
     /* Cards */
     .work-item {
@@ -700,26 +819,11 @@
     @media (max-width: 900px) {
       .work-header { padding: 48px 20px 36px; }
       .work-content { padding: 0 12px; }
-      .work-main-grid { grid-template-rows: repeat(2, 180px); gap: 6px; }
-      .work-bottom-grid { gap: 6px; margin-top: 6px; }
-    }
-
-    @media (max-width: 768px) {
-      .work-main-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        gap: 6px;
-      }
-      .work-main-grid .work-item { aspect-ratio: 16 / 9; }
-      .work-hero-item { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 3; }
-      .work-bottom-grid { grid-template-columns: 1fr; }
-      .work-bottom-grid .work-item { aspect-ratio: 16 / 9; }
-      .work-bottom-grid .work-item:last-child { display: block; }
     }
 
     /* ── BRAND COLLABORATIONS ── */
     .collabs-section {
-      padding: 96px 64px;
+      padding: 120px 80px;
       background: var(--white);
       border-bottom: 1px solid var(--border);
     }
@@ -732,9 +836,12 @@
     }
 
     .collabs-heading {
-      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      font-size: clamp(2.6rem, 4.5vw, 5rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      perspective: 800px;
+      transform-style: preserve-3d;
     }
 
     .collabs-sub {
@@ -751,7 +858,7 @@
 
     .collab-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 4px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -888,7 +995,7 @@
     }
 
     .cta-ghost-text {
-      font-size: clamp(80px, 18vw, 220px);
+      font-size: clamp(100px, 22vw, 300px);
       font-weight: 800;
       letter-spacing: -0.04em;
       white-space: nowrap;
@@ -907,11 +1014,13 @@
     }
 
     .cta-heading {
-      font-size: clamp(2.4rem, 5.5vw, 5rem);
+      font-size: clamp(3.2rem, 7vw, 7.5rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
       color: #fff;
+      perspective: 800px;
+      transform-style: preserve-3d;
     }
 
     .cta-heading .cta-accent { color: #d4a0ff; }
@@ -979,82 +1088,6 @@
       line-height: 1.6;
     }
 
-    /* ── MOBILE ── */
-    @media (max-width: 768px) {
-      nav {
-        padding: 0 20px;
-        position: relative;
-      }
-
-      .nav-inner {
-        grid-template-columns: 1fr auto;
-      }
-
-      .nav-links-wrapper {
-        display: none;
-        position: absolute;
-        top: var(--nav-height);
-        left: 0;
-        right: 0;
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
-        padding: 20px 20px 24px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-      }
-
-      .nav-links-wrapper.open {
-        display: flex;
-      }
-
-      .nav-links {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-        width: 100%;
-      }
-
-      .nav-links li {
-        width: 100%;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 14px 0;
-        font-size: 16px;
-      }
-
-      .nav-links a::after {
-        display: none;
-      }
-
-      .nav-actions {
-        margin-top: 20px;
-      }
-
-      .nav-toggle {
-        display: flex;
-      }
-
-      /* hide desktop centre+actions inside the grid */
-      .nav-inner > .nav-links-wrapper {
-        display: none;
-      }
-    }
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.reveal-up    { transform: translateY(32px); }
-    .reveal.reveal-scale { transform: scale(0.94) translateY(20px); }
-    .reveal.reveal-left  { transform: translateX(-40px); }
-    .reveal.is-visible   { opacity: 1; transform: none; }
-    .delay-1 { transition-delay: 0.1s; }
-    .delay-2 { transition-delay: 0.2s; }
-    .delay-3 { transition-delay: 0.3s; }
 
     /* ── FOOTER ── */
     footer {
@@ -1087,41 +1120,50 @@
 </head>
 <body>
 
+  <!-- Preloader -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-word">
+      <span class="preloader-text">NIKKI <span class="preloader-accent">PANIC</span></span>
+    </div>
+  </div>
+
   <nav>
     <div class="nav-inner">
       <a class="nav-logo" href="#">Nikki Panic</a>
-
-      <div class="nav-links-wrapper" id="navMenu">
-        <ul class="nav-links">
-          <li><a href="#work">Work</a></li>
-          <li><a href="#videos">Videos</a></li>
-          <li><a href="#collabs">Collabs</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="nav-actions">
-          <a class="btn-book" href="#contact">Book now</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+        <div class="menu-btn-slide">
+          <span>Menu</span>
+          <span>Close</span>
         </div>
-      </div>
-
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
+  <!-- Fullscreen overlay menu -->
+  <div id="navOverlay" class="nav-overlay" aria-hidden="true">
+    <div class="overlay-inner">
+      <ul class="overlay-links">
+        <li class="overlay-link"><a href="#work">Work</a></li>
+        <li class="overlay-link"><a href="#videos">Videos</a></li>
+        <li class="overlay-link"><a href="#collabs">Collabs</a></li>
+        <li class="overlay-link"><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="overlay-footer">
+        <a class="btn-book overlay-cta" href="#contact">Book now</a>
+        <div class="overlay-socials">
+          <a href="https://www.tiktok.com/@nikkipanic" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.instagram.com/nikkipanic" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section class="hero">
+    <video class="hero-video" src="hero.MP4" autoplay muted loop playsinline preload="auto"></video>
     <div class="hero-left">
-      <div class="hero-badge">London-based nail artist</div>
-
       <h1 class="hero-heading">
-        Nails that make you<br>
-        <span class="glitch">stop scrolling</span>
+        <span class="hero-text-main">Nails that make you</span><br><span class="hero-accent">stop scrolling</span>
       </h1>
-
-      <p class="hero-desc">
-        Editorial, avant-garde, and wearable nail art crafted for creatives,
-        brands, and anyone who treats their hands as a canvas.
-      </p>
 
       <div class="hero-scroll">
         <span>Scroll</span>
@@ -1131,9 +1173,6 @@
       </div>
     </div>
 
-    <div class="hero-right">
-      <video src="hero.mp4" autoplay muted loop playsinline></video>
-    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -1143,7 +1182,7 @@
        data-decimals: decimal places to show during count (default 0)
        Leave data-count absent for a static (non-animated) number.
   ════════════════════════════════════════════════ -->
-  <div class="stats-bar reveal reveal-up" id="statsBar">
+  <div class="stats-bar" id="statsBar">
 
     <div class="stat">
       <span class="stat-number" data-count="2.4" data-suffix="M" data-decimals="1">2.4M</span>
@@ -1172,122 +1211,29 @@
 
   </div>
 
+  <!-- ── ABOUT / DESCRIPTION ── -->
+  <div class="about-section">
+    <div class="about-text-wrap">
+      <p class="about-text">
+        <b>Editorial, avant-garde, and wearable</b> nail art crafted for <b>creatives, brands</b>,
+        and anyone who treats their <b>hands as a canvas</b>.
+      </p>
+    </div>
+    <div class="about-btn-track">
+      <a class="about-btn" href="#contact" aria-label="About Me">
+        <span class="about-btn-text">About Me</span>
+      </a>
+    </div>
+  </div>
+
   <main>
-    <!-- ── SELECTED WORK ────────────────────────────────────────────
-         Grid: left hero spans 2 rows; middle + right have 2 stacked each.
-         Bottom row: 3 equal squares. All cards share .work-item hover fx.
-         Ticker: 3 repetitions per copy × 2 copies = seamless on any screen.
-    ─────────────────────────────────────────────────────────────────── -->
-    <section id="work" class="work-section">
-
-      <div class="work-header reveal reveal-up">
-        <span class="work-section-label">Selected work</span>
-        <a class="work-view-all" href="#">View all →</a>
-      </div>
-
-      <div class="ticker-wrap reveal reveal-up">
-        <div class="ticker-track">
-          <span class="ticker-copy">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span><span class="ticker-copy" aria-hidden="true">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span>
-        </div>
-      </div>
-
-      <div class="work-content reveal reveal-scale">
-
-        <div class="work-main-grid">
-
-          <!-- Left: hero, spans 2 rows -->
-          <div class="work-item work-hero-item">
-            <div class="work-img" style="background: linear-gradient(160deg, #0d001a 0%, #3d0066 45%, #000d26 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 14.2K</span>
-              <span class="work-tag">3D sculpted</span>
-            </div>
-          </div>
-
-          <!-- Middle top -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #001a10 0%, #005c30 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 8.7K</span>
-              <span class="work-tag">Chrome finish</span>
-            </div>
-          </div>
-
-          <!-- Right top -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #0a0820 0%, #1a0a50 50%, #440088 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 6.1K</span>
-              <span class="work-tag">Crystal set</span>
-            </div>
-          </div>
-
-          <!-- Middle bottom -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #1a0400 0%, #7a1800 50%, #400800 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 11.3K</span>
-              <span class="work-tag">Hand painted</span>
-            </div>
-          </div>
-
-          <!-- Right bottom -->
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #00141e 0%, #003d52 50%, #006866 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 9.5K</span>
-              <span class="work-tag">Aura nails</span>
-            </div>
-          </div>
-
-        </div><!-- /work-main-grid -->
-
-        <div class="work-bottom-grid">
-
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #1a0c00 0%, #5c2800 50%, #7a3800 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 7.8K</span>
-              <span class="work-tag">Glazed</span>
-            </div>
-          </div>
-
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #000018 0%, #10003a 50%, #4a0066 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 18.4K</span>
-              <span class="work-tag">Viral</span>
-            </div>
-          </div>
-
-          <div class="work-item">
-            <div class="work-img" style="background: linear-gradient(135deg, #0a1400 0%, #283800 50%, #005520 100%)"></div>
-            <div class="work-overlay"></div>
-            <div class="work-meta">
-              <span class="work-likes">♥ 5.2K</span>
-              <span class="work-tag">Nail art</span>
-            </div>
-          </div>
-
-        </div><!-- /work-bottom-grid -->
-
-      </div><!-- /work-content -->
-
-    </section>
 
     <!-- ── VIDEOS ─────────────────────────────────────────────────
          To add / edit cards: copy a .video-card block, update the
          gradient stop colours, data-src (future video URL), views,
          and title. The drag-scroll JS is automatic.
     ──────────────────────────────────────────────────────────── -->
-    <section id="videos" class="videos-section reveal reveal-up">
+    <section id="videos" class="videos-section">
 
       <div class="videos-header">
         <span class="videos-label">Videos</span>
@@ -1387,7 +1333,7 @@
 
     <section id="collabs" class="collabs-section">
 
-      <div class="collabs-header reveal reveal-left">
+      <div class="collabs-header">
         <h2 class="collabs-heading">Brand collaborations</h2>
         <span class="collabs-sub">Selected partnerships</span>
       </div>
@@ -1395,7 +1341,7 @@
       <div class="collabs-grid">
 
         <!-- Card 1 -->
-        <div class="collab-card reveal reveal-up delay-1">
+        <div class="collab-card">
           <div class="collab-card-top">
             <div class="collab-logo" style="background:#f0e6ff; color:#7c3aed;">OPI</div>
             <div class="collab-brand-info">
@@ -1414,7 +1360,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="collab-card reveal reveal-up delay-2">
+        <div class="collab-card">
           <div class="collab-card-top">
             <div class="collab-logo" style="background:#fce7f3; color:#be185d;">NC</div>
             <div class="collab-brand-info">
@@ -1433,7 +1379,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="collab-card reveal reveal-up delay-3">
+        <div class="collab-card">
           <div class="collab-card-top">
             <div class="collab-logo" style="background:#e0f2fe; color:#0369a1;">GL</div>
             <div class="collab-brand-info">
@@ -1455,8 +1401,90 @@
 
     </section>
 
+    <!-- ── SELECTED WORK ────────────────────────────────────────────
+         Grid: left hero spans 2 rows; middle + right have 2 stacked each.
+         Bottom row: 3 equal squares. All cards share .work-item hover fx.
+         Ticker: 3 repetitions per copy × 2 copies = seamless on any screen.
+    ─────────────────────────────────────────────────────────────────── -->
+    <section id="work" class="work-section">
+
+      <div class="work-header">
+        <span class="work-section-label">Selected work</span>
+        <a class="work-view-all" href="#">View all →</a>
+      </div>
+
+      <div class="ticker-wrap">
+        <div class="ticker-track">
+          <span class="ticker-copy">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span><span class="ticker-copy" aria-hidden="true">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span>
+        </div>
+      </div>
+
+      <div class="work-content">
+
+        <div class="work-main-grid">
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(160deg, #0d001a 0%, #3d0066 45%, #000d26 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 14.2K</span>
+              <span class="work-tag">3D sculpted</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #000018 0%, #10003a 50%, #4a0066 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 18.4K</span>
+              <span class="work-tag">Viral</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #1a0400 0%, #7a1800 50%, #400800 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 11.3K</span>
+              <span class="work-tag">Hand painted</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #0a0820 0%, #1a0a50 50%, #440088 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 6.1K</span>
+              <span class="work-tag">Crystal set</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #001a10 0%, #005c30 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 8.7K</span>
+              <span class="work-tag">Chrome finish</span>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-img" style="background: linear-gradient(135deg, #00141e 0%, #003d52 50%, #006866 100%)"></div>
+            <div class="work-overlay"></div>
+            <div class="work-meta">
+              <span class="work-likes">♥ 9.5K</span>
+              <span class="work-tag">Aura nails</span>
+            </div>
+          </div>
+
+        </div><!-- /work-main-grid -->
+
+      </div><!-- /work-content -->
+
+    </section>
+
     <div id="contact" class="cta-outer">
-      <div class="cta-section reveal reveal-up">
+      <div class="cta-section">
 
         <div class="cta-ghost" aria-hidden="true">
           <span class="cta-ghost-text">NIKKI PANIC</span>
@@ -1472,33 +1500,79 @@
     </div>
   </main>
 
-  <footer class="reveal reveal-up">
-    <span>© 2024 Nikki Panic. All rights reserved.</span>
-    <nav class="footer-links">
+  <footer>
+<nav class="footer-links">
       <a href="https://www.tiktok.com/@nikkipanic" target="_blank" rel="noopener">@nikkipanic</a>
       <a href="https://www.tiktok.com/@nikkipanic" target="_blank" rel="noopener">TikTok</a>
       <a href="https://www.instagram.com/nikkipanic" target="_blank" rel="noopener">Instagram</a>
     </nav>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
+
   <script>
-    const toggle = document.getElementById('navToggle');
-    const menu = document.getElementById('navMenu');
+    // ── OVERLAY MENU ──────────────────────────────────────────────
+    (function () {
+      const btn     = document.getElementById('menuBtn');
+      const overlay = document.getElementById('navOverlay');
+      const links   = Array.from(overlay.querySelectorAll('.overlay-link a'));
+      let menuOpen  = false;
 
-    toggle.addEventListener('click', () => {
-      const isOpen = menu.classList.toggle('open');
-      toggle.classList.toggle('open', isOpen);
-      toggle.setAttribute('aria-expanded', isOpen);
-    });
+      function openMenu() {
+        menuOpen = true;
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
 
-    // Close mobile menu on link click
-    menu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        menu.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', false);
+        gsap.fromTo(overlay,
+          { clipPath: 'inset(0 0 100% 0)' },
+          { clipPath: 'inset(0 0 0% 0)', duration: 0.75, ease: 'power3.inOut' }
+        );
+        gsap.fromTo(links,
+          { y: 80, rotateX: 90, opacity: 0 },
+          { y: 0, rotateX: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.35 }
+        );
+      }
+
+      function closeMenu() {
+        menuOpen = false;
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+
+        gsap.to(links, { y: -20, opacity: 0, duration: 0.3, stagger: 0.05, ease: 'power2.in' });
+        gsap.to(overlay, {
+          clipPath: 'inset(0 0 100% 0)',
+          duration: 0.6,
+          ease: 'power3.inOut',
+          delay: 0.15,
+          onComplete: () => {
+            overlay.classList.remove('active');
+            overlay.setAttribute('aria-hidden', 'true');
+          }
+        });
+      }
+
+      btn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+      links.forEach(l => l.addEventListener('click', closeMenu));
+      const cta = overlay.querySelector('.overlay-cta');
+      if (cta) cta.addEventListener('click', closeMenu);
+    })();
+
+    // ── HERO VIDEO FORCE-PLAY ────────────────────────────────────
+    (function () {
+      const v = document.querySelector('.hero-video');
+      if (!v) return;
+      v.play().catch(() => {
+        // If autoplay blocked, play on first user interaction
+        document.addEventListener('touchstart', () => v.play(), { once: true });
+        document.addEventListener('click',      () => v.play(), { once: true });
       });
-    });
+    })();
 
     // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
     (function () {
@@ -1576,21 +1650,220 @@
       targets.forEach(el => observer.observe(el));
     })();
 
-    // ── SCROLL REVEAL ────────────────────────────────────────────
-    (function () {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-      );
+    // ── GSAP ANIMATIONS ──────────────────────────────────────────
+    // iOS Safari ignores overflow:hidden — position:fixed is the only
+    // reliable scroll lock on mobile.
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top      = '0';
+    document.body.style.width    = '100%';
 
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ── PAGE OPENING ANIMATION ───────────────────────────────────
+    (function () {
+      const preloader = document.getElementById('preloader');
+      const text      = preloader.querySelector('.preloader-text');
+
+      gsap.to(text, { y: '0%', duration: 0.45, ease: 'power3.out', delay: 0.05 });
+
+      const tl = gsap.timeline({ delay: 0.65 });
+      tl.to(text, { y: '-110%', duration: 0.3, ease: 'power3.in' })
+        .to(preloader, {
+          clipPath: 'inset(0 0 100% 0)',
+          duration: 0.4,
+          ease: 'power4.inOut',
+          onComplete: () => {
+            preloader.remove();
+            // Disable smooth-scroll so scrollTo snaps instantly (not animated)
+            document.documentElement.style.scrollBehavior = 'auto';
+            // Unlock — remove fixed lock before scrollTo so it takes effect
+            document.documentElement.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top      = '';
+            document.body.style.width    = '';
+            // Belt-and-suspenders scroll reset for all browsers / iOS
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            // Restore smooth scroll and start Lenis at position 0
+            requestAnimationFrame(() => {
+              document.documentElement.style.scrollBehavior = '';
+              const lenis = new Lenis({ duration: 1.2 });
+              lenis.on('scroll', ScrollTrigger.update);
+              gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+              gsap.ticker.lagSmoothing(0);
+            });
+          }
+        }, '-=0.05')
+        .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.35, ease: 'power3.out' }, '-=0.05')
+        .from('.hero-accent',    { opacity: 0, y: 30, duration: 0.35, ease: 'power3.out' }, '-=0.25');
+    })();
+
+    // ── VIDEOS AUTO-SCROLL ───────────────────────────────────────
+    // Touch devices get native scroll; auto-scroll runs on desktop only.
+    (function () {
+      const track = document.getElementById('videosTrack');
+      if (!track) return;
+      if ('ontouchstart' in window) return;
+      const tween = gsap.to(track, {
+        scrollLeft: () => track.scrollWidth - track.clientWidth,
+        duration: 24,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        repeatDelay: 1,
+      });
+      track.addEventListener('mousedown', () => tween.pause());
+      document.addEventListener('mouseup',  () => tween.resume());
+    })();
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+
+      // ── SCROLL REVEAL ─────────────────────────────────────────
+      ['.about-section', '#statsBar', '.videos-section', '.work-header', '.ticker-wrap', '.work-content', 'footer']
+        .forEach(sel => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          gsap.from(el, {
+            opacity: 0, y: 40, duration: 0.85, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          });
+        });
+
+      gsap.from('.collabs-header', {
+        opacity: 0, x: -50, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: '.collabs-header', start: 'top 85%', toggleActions: 'play none none none' }
+      });
+
+      gsap.from('.collab-card', {
+        opacity: 0, y: 50, duration: 0.8, ease: 'power3.out', stagger: 0.12,
+        scrollTrigger: { trigger: '.collabs-grid', start: 'top 82%', toggleActions: 'play none none none' }
+      });
+
+      gsap.from('.cta-section', {
+        opacity: 0, y: 30, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: '.cta-section', start: 'top 80%', toggleActions: 'play none none none' }
+      });
+
+      // ── PARALLAX ────────────────────────────────────────────
+      gsap.to('.hero-left', {
+        yPercent: -8, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.8 }
+      });
+      gsap.to('.hero-badge', {
+        y: -30, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+      });
+      gsap.to('.collab-card', {
+        y: -20, ease: 'none', stagger: 0.08,
+        scrollTrigger: { trigger: '.collabs-section', start: 'top bottom', end: 'bottom top', scrub: 1.8 }
+      });
+      gsap.to('.work-main-grid .work-item:nth-child(odd)', {
+        y: -25, ease: 'none',
+        scrollTrigger: { trigger: '.work-section', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+      });
+      gsap.to('.work-main-grid .work-item:nth-child(even)', {
+        y: 25, ease: 'none',
+        scrollTrigger: { trigger: '.work-section', start: 'top bottom', end: 'bottom top', scrub: 2.2 }
+      });
+      gsap.to('.cta-ghost-text', {
+        xPercent: -6, ease: 'none',
+        scrollTrigger: { trigger: '.cta-section', start: 'top bottom', end: 'bottom top', scrub: 2.5 }
+      });
+
+      // ── HERO TEXT SLIDE-OFF ──────────────────────────────────
+      // Slides the full viewport width so text travels off screen.
+      // Reversible on scroll-up via scrub.
+      gsap.to('.hero-text-main', {
+        x: () => -window.innerWidth, ease: 'power2.in',
+        scrollTrigger: {
+          trigger: '.hero', start: 'top top', end: 'bottom top',
+          scrub: 0.8, invalidateOnRefresh: true
+        }
+      });
+      gsap.to('.hero-accent', {
+        x: () => window.innerWidth, ease: 'power2.in',
+        scrollTrigger: {
+          trigger: '.hero', start: 'top top', end: 'bottom top',
+          scrub: 0.8, invalidateOnRefresh: true
+        }
+      });
+
+      // ── MAGNETIC EFFECT ──────────────────────────────────────
+      function initMagnetic(el) {
+        const xTo = gsap.quickTo(el, 'x', { duration: 1, ease: 'elastic.out(1, 0.3)' });
+        const yTo = gsap.quickTo(el, 'y', { duration: 1, ease: 'elastic.out(1, 0.3)' });
+        el.addEventListener('mousemove', e => {
+          const r = el.getBoundingClientRect();
+          xTo((e.clientX - (r.left + r.width  / 2)) * 0.35);
+          yTo((e.clientY - (r.top  + r.height / 2)) * 0.35);
+        });
+        el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+      }
+      document.querySelectorAll('#menuBtn, .cta-btn, .overlay-cta').forEach(initMagnetic);
+
+      // ── ABOUT BUTTON ROLL ─────────────────────────────────────
+      // Button rolls left→right as you scroll through the section.
+      // Rotation matches the physics of a circle rolling that distance.
+      (function () {
+        const btn   = document.querySelector('.about-btn');
+        const track = document.querySelector('.about-btn-track');
+        if (!btn || !track) return;
+
+        gsap.to(btn, {
+          x: () => track.offsetWidth - btn.offsetWidth,
+          rotation: () => {
+            const dist = track.offsetWidth - btn.offsetWidth;
+            return dist / (btn.offsetWidth / 2) * (180 / Math.PI);
+          },
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.about-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          }
+        });
+      })();
+
+    }
+
+    // ── OVERLAY LINK SCRAMBLE ────────────────────────────────────
+    (function () {
+      const CHARS    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&';
+      const DURATION = 500;
+      const FRAME_MS = 40;
+      const SETTLE   = 0.55;
+
+      function scramble(el) {
+        const original = el.dataset.original || el.textContent;
+        el.dataset.original = original;
+        const len = original.length;
+        let startTime = null;
+
+        function frame(ts) {
+          if (!startTime) startTime = ts;
+          const progress = Math.min((ts - startTime) / DURATION, 1);
+          const settled  = progress > SETTLE
+            ? Math.floor((progress - SETTLE) / (1 - SETTLE) * len) : 0;
+          let out = '';
+          for (let i = 0; i < len; i++) {
+            out += (i < settled || original[i] === ' ')
+              ? original[i]
+              : CHARS[Math.floor(Math.random() * CHARS.length)];
+          }
+          el.textContent = out;
+          if (progress < 1) setTimeout(() => requestAnimationFrame(frame), FRAME_MS);
+          else el.textContent = original;
+        }
+        requestAnimationFrame(frame);
+      }
+
+      document.querySelectorAll('.overlay-link a').forEach(link => {
+        link.addEventListener('mouseenter', () => scramble(link));
+      });
     })();
   </script>
 
