@@ -1736,14 +1736,14 @@
       gsap.to('.hero-text-main', {
         x: () => -window.innerWidth, ease: 'power2.in',
         scrollTrigger: {
-          trigger: '.hero', start: '20% top', end: 'bottom top',
+          trigger: '.hero', start: 'top top', end: 'bottom top',
           scrub: 0.8, invalidateOnRefresh: true
         }
       });
       gsap.to('.hero-accent', {
         x: () => window.innerWidth, ease: 'power2.in',
         scrollTrigger: {
-          trigger: '.hero', start: '20% top', end: 'bottom top',
+          trigger: '.hero', start: 'top top', end: 'bottom top',
           scrub: 0.8, invalidateOnRefresh: true
         }
       });
