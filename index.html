@@ -517,7 +517,6 @@
       padding: 100px 0;
       background: var(--white);
       border-bottom: 1px solid var(--border);
-      overflow: hidden;
     }
 
     .videos-header {
@@ -562,25 +561,13 @@
 
     .videos-track {
       display: flex;
-      gap: 16px;
-      padding: 4px 64px 20px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      cursor: grab;
-      -webkit-overflow-scrolling: touch;
+      gap: 24px;
+      padding: 4px 64px 40px;
+      will-change: transform;
     }
-
-    .videos-track:active {
-      cursor: grabbing;
-    }
-
-    /* hide scrollbar cross-browser */
-    .videos-track::-webkit-scrollbar { display: none; }
-    .videos-track { scrollbar-width: none; -ms-overflow-style: none; }
 
     .video-card {
-      flex: 0 0 180px;
-      scroll-snap-align: start;
+      flex: 0 0 clamp(220px, 28vw, 360px);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -589,7 +576,7 @@
 
     .video-thumb {
       position: relative;
-      width: 180px;
+      width: 100%;
       aspect-ratio: 9 / 16;
       border-radius: 12px;
       overflow: hidden;
@@ -647,7 +634,6 @@
       font-weight: 600;
       line-height: 1.4;
       color: var(--black);
-      max-width: 180px;
     }
 
     @media (max-width: 768px) {
@@ -1229,7 +1215,7 @@
         <a class="videos-view-all" href="#">View all →</a>
       </div>
 
-      <p class="videos-drag-hint">Drag to explore →</p>
+      <p class="videos-drag-hint">Scroll to explore →</p>
 
       <div class="videos-track" id="videosTrack">
 
@@ -1564,35 +1550,6 @@
       });
     })();
 
-    // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
-    (function () {
-      const track = document.getElementById('videosTrack');
-      if (!track) return;
-
-      let isDragging = false, startX = 0, scrollLeft = 0;
-
-      track.addEventListener('mousedown', e => {
-        isDragging = true;
-        startX    = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-      });
-
-      document.addEventListener('mouseup',   () => { isDragging = false; });
-      document.addEventListener('mouseleave', () => { isDragging = false; });
-
-      track.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x    = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 1.4;
-        track.scrollLeft = scrollLeft - walk;
-      });
-
-      // Prevent stray clicks after drag
-      track.addEventListener('click', e => {
-        if (Math.abs(track.scrollLeft - scrollLeft) > 4) e.preventDefault();
-      });
-    })();
 
     // ── STATS COUNT-UP ──────────────────────────────────────────
     // Animates stat-number elements that have a data-count attribute.
@@ -1704,6 +1661,25 @@
         opacity: 0, y: 30, duration: 0.9, ease: 'power3.out',
         scrollTrigger: { trigger: '.cta-section', start: 'top 80%', toggleActions: 'play none none none' }
       });
+
+      // ── VIDEOS HORIZONTAL SCROLL ────────────────────────────
+      (function () {
+        const track = document.getElementById('videosTrack');
+        if (!track) return;
+        gsap.to(track, {
+          x: () => -(track.scrollWidth - window.innerWidth),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.videos-section',
+            start: 'top top',
+            end: () => '+=' + (track.scrollWidth - window.innerWidth),
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          }
+        });
+      })();
 
       // ── PARALLAX ────────────────────────────────────────────
       gsap.to('.hero-left', {
