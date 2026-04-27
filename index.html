@@ -580,8 +580,7 @@
     .videos-track { scrollbar-width: none; -ms-overflow-style: none; }
 
     .video-card {
-      flex: 0 0 180px;
-      scroll-snap-align: start;
+      flex: 0 0 clamp(200px, 28vw, 340px);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -590,7 +589,7 @@
 
     .video-thumb {
       position: relative;
-      width: 180px;
+      width: 100%;
       aspect-ratio: 9 / 16;
       border-radius: 12px;
       overflow: hidden;
@@ -648,7 +647,6 @@
       font-weight: 600;
       line-height: 1.4;
       color: var(--black);
-      max-width: 180px;
     }
 
     @media (max-width: 768px) {
@@ -1682,13 +1680,15 @@
     (function () {
       const track = document.getElementById('videosTrack');
       if (!track) return;
+      const getTravel = () => -(track.scrollWidth - track.parentElement.clientWidth);
       const tween = gsap.to(track, {
-        scrollLeft: () => track.scrollWidth - track.clientWidth,
-        duration: 24,
+        x: getTravel,
+        duration: 20,
         ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
-        repeatDelay: 1,
+        repeatDelay: 0.8,
+        invalidateOnRefresh: true,
       });
       track.addEventListener('mousedown', () => tween.pause());
       document.addEventListener('mouseup', () => tween.resume());
