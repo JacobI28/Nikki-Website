@@ -78,6 +78,14 @@
       right: 0;
       z-index: 200;
       background: transparent;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+
+    nav.nav--scrolled {
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
       height: var(--nav-height);
       display: flex;
       align-items: center;
@@ -1639,6 +1647,14 @@
       );
 
       targets.forEach(el => observer.observe(el));
+    })();
+
+    // ── NAV SCROLL BACKGROUND ────────────────────────────────────
+    (function () {
+      const nav = document.querySelector('nav');
+      window.addEventListener('scroll', function () {
+        nav.classList.toggle('nav--scrolled', window.scrollY > 80);
+      }, { passive: true });
     })();
 
     // ── GSAP ANIMATIONS ──────────────────────────────────────────
