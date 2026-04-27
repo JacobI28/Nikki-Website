@@ -53,21 +53,31 @@
       pointer-events: none;
     }
 
+    .preloader-words {
+      display: flex;
+      gap: 0.22em;
+    }
+
     .preloader-word {
       overflow: hidden;
     }
 
-    .preloader-text {
+    .preloader-nikki,
+    .preloader-panic {
       font-size: clamp(2.4rem, 7vw, 6rem);
       font-weight: 800;
       letter-spacing: -0.04em;
-      color: #fff;
       display: block;
+    }
+
+    .preloader-nikki {
+      color: #fff;
       transform: translateY(110%);
     }
 
-    .preloader-accent {
+    .preloader-panic {
       color: #d4a0ff;
+      transform: translateY(-110%);
     }
 
     /* ── NAV ── */
@@ -1092,8 +1102,13 @@
 
   <!-- Preloader -->
   <div id="preloader" class="preloader">
-    <div class="preloader-word">
-      <span class="preloader-text">NIKKI <span class="preloader-accent">PANIC</span></span>
+    <div class="preloader-words">
+      <div class="preloader-word">
+        <span class="preloader-nikki">NIKKI</span>
+      </div>
+      <div class="preloader-word">
+        <span class="preloader-panic">PANIC</span>
+      </div>
     </div>
   </div>
 
@@ -1629,12 +1644,15 @@
     // ── PAGE OPENING ANIMATION ───────────────────────────────────
     (function () {
       const preloader = document.getElementById('preloader');
-      const text      = preloader.querySelector('.preloader-text');
+      const nikki     = preloader.querySelector('.preloader-nikki');
+      const panic     = preloader.querySelector('.preloader-panic');
 
-      gsap.to(text, { y: '0%', duration: 0.45, ease: 'power3.out', delay: 0.05 });
+      gsap.to(nikki, { y: '0%', duration: 0.45, ease: 'power3.out', delay: 0.05 });
+      gsap.to(panic, { y: '0%', duration: 0.45, ease: 'power3.out', delay: 0.05 });
 
       const tl = gsap.timeline({ delay: 0.65 });
-      tl.to(text, { y: '-110%', duration: 0.3, ease: 'power3.in' })
+      tl.to(nikki, { y: '-110%', duration: 0.3, ease: 'power3.in' })
+        .to(panic,  { y: '110%',  duration: 0.3, ease: 'power3.in' }, '<')
         .to(preloader, {
           clipPath: 'inset(0 0 100% 0)',
           duration: 0.4,
