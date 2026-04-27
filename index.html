@@ -1642,9 +1642,12 @@
     })();
 
     // ── GSAP ANIMATIONS ──────────────────────────────────────────
-    // Lock scroll on both html + body (body alone doesn't stop all browsers)
+    // iOS Safari ignores overflow:hidden — position:fixed is the only
+    // reliable scroll lock on mobile.
     document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top      = '0';
+    document.body.style.width    = '100%';
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -1663,15 +1666,25 @@
           ease: 'power4.inOut',
           onComplete: () => {
             preloader.remove();
+            // Disable smooth-scroll so scrollTo snaps instantly (not animated)
+            document.documentElement.style.scrollBehavior = 'auto';
+            // Unlock — remove fixed lock before scrollTo so it takes effect
             document.documentElement.style.overflow = '';
-            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top      = '';
+            document.body.style.width    = '';
+            // Belt-and-suspenders scroll reset for all browsers / iOS
             window.scrollTo(0, 0);
-
-            // Initialise Lenis here so it always reads scrollY=0 on creation
-            const lenis = new Lenis({ duration: 1.2 });
-            lenis.on('scroll', ScrollTrigger.update);
-            gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-            gsap.ticker.lagSmoothing(0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            // Restore smooth scroll and start Lenis at position 0
+            requestAnimationFrame(() => {
+              document.documentElement.style.scrollBehavior = '';
+              const lenis = new Lenis({ duration: 1.2 });
+              lenis.on('scroll', ScrollTrigger.update);
+              gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+              gsap.ticker.lagSmoothing(0);
+            });
           }
         }, '-=0.05')
         .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.35, ease: 'power3.out' }, '-=0.05')
