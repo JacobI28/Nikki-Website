@@ -1788,27 +1788,21 @@
         const track = document.querySelector('.about-btn-track');
         if (!btn || !track) return;
 
-        gsap.fromTo(btn,
-          {
-            x: () => track.offsetWidth - btn.offsetWidth,
-            rotation: () => {
-              const dist = track.offsetWidth - btn.offsetWidth;
-              return dist / (btn.offsetWidth / 2) * (180 / Math.PI);
-            },
+        gsap.to(btn, {
+          x: () => track.offsetWidth - btn.offsetWidth,
+          rotation: () => {
+            const dist = track.offsetWidth - btn.offsetWidth;
+            return dist / (btn.offsetWidth / 2) * (180 / Math.PI);
           },
-          {
-            x: 0,
-            rotation: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '.about-section',
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.5,
-              invalidateOnRefresh: true,
-            }
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.about-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+            invalidateOnRefresh: true,
           }
-        );
+        });
       })();
 
     }
