@@ -72,12 +72,12 @@
 
     .preloader-nikki {
       color: #fff;
-      transform: translateY(110%);
+      transform: translateY(-110%);
     }
 
     .preloader-panic {
       color: #d4a0ff;
-      transform: translateY(-110%);
+      transform: translateY(110%);
     }
 
     /* ── NAV ── */
@@ -1651,8 +1651,8 @@
       gsap.to(panic, { y: '0%', duration: 0.45, ease: 'power3.out', delay: 0.05 });
 
       const tl = gsap.timeline({ delay: 0.65 });
-      tl.to(nikki, { y: '-110%', duration: 0.3, ease: 'power3.in' })
-        .to(panic,  { y: '110%',  duration: 0.3, ease: 'power3.in' }, '<')
+      tl.to(nikki, { y: '110%',  duration: 0.3, ease: 'power3.in' })
+        .to(panic,  { y: '-110%', duration: 0.3, ease: 'power3.in' }, '<')
         .to(preloader, {
           clipPath: 'inset(0 0 100% 0)',
           duration: 0.4,
