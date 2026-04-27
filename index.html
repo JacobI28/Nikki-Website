@@ -704,46 +704,14 @@
 
     .work-view-all:hover { opacity: 0.7; }
 
-    /* Marquee ticker */
-    .ticker-wrap {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 13px 0;
-      overflow: hidden;
-      margin-bottom: 48px;
-    }
-
-    .ticker-track {
-      display: inline-flex;
-      width: max-content;
-      white-space: nowrap;
-      animation: ticker-scroll 34s linear infinite;
-      will-change: transform;
-    }
-
-    .ticker-track:hover { animation-play-state: paused; }
-
-    .ticker-copy {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      color: rgba(255, 255, 255, 0.38);
-    }
-
-    .ticker-star { color: #d4a0ff; }
-
-    @keyframes ticker-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
     /* Editorial grid */
     .work-content { padding: 0 24px; }
 
     .work-main-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
+      max-width: 900px;
     }
 
     .work-main-grid .work-item { aspect-ratio: 4 / 5; }
@@ -1413,11 +1381,7 @@
         <a class="work-view-all" href="#">View all →</a>
       </div>
 
-      <div class="ticker-wrap">
-        <div class="ticker-track">
-          <span class="ticker-copy">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span><span class="ticker-copy" aria-hidden="true">Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> Hand painted <span class="ticker-star">★</span> 3D sculpted <span class="ticker-star">★</span> Chrome finish <span class="ticker-star">★</span> Crystal set <span class="ticker-star">★</span> Viral nails <span class="ticker-star">★</span> London based <span class="ticker-star">★</span> </span>
-        </div>
-      </div>
+
 
       <div class="work-content">
 
@@ -1721,7 +1685,7 @@
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
       // ── SCROLL REVEAL ─────────────────────────────────────────
-      ['.about-section', '#statsBar', '.videos-section', '.work-header', '.ticker-wrap', '.work-content', 'footer']
+      ['.about-section', '#statsBar', '.videos-section', '.work-header', '.work-content', 'footer']
         .forEach(sel => {
           const el = document.querySelector(sel);
           if (!el) return;
