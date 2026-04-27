@@ -1642,9 +1642,10 @@
     })();
 
     // ── GSAP ANIMATIONS ──────────────────────────────────────────
-    // Always start at the very top — prevents browser scroll restoration
+    // Lock scroll immediately — prevents any position drift before preloader finishes
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
+    document.body.style.overflow = 'hidden';
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -1669,7 +1670,12 @@
           clipPath: 'inset(0 0 100% 0)',
           duration: 0.4,
           ease: 'power4.inOut',
-          onComplete: () => preloader.remove()
+          onComplete: () => {
+            preloader.remove();
+            // Unlock scroll and force Lenis to position 0
+            document.body.style.overflow = '';
+            lenis.scrollTo(0, { immediate: true });
+          }
         }, '-=0.05')
         .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.35, ease: 'power3.out' }, '-=0.05')
         .from('.hero-accent',    { opacity: 0, y: 30, duration: 0.35, ease: 'power3.out' }, '-=0.25');
