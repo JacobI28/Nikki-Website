@@ -1692,9 +1692,11 @@
     })();
 
     // ── VIDEOS AUTO-SCROLL ───────────────────────────────────────
+    // Touch devices get native scroll; auto-scroll runs on desktop only.
     (function () {
       const track = document.getElementById('videosTrack');
       if (!track) return;
+      if ('ontouchstart' in window) return;
       const tween = gsap.to(track, {
         scrollLeft: () => track.scrollWidth - track.clientWidth,
         duration: 24,
@@ -1704,9 +1706,7 @@
         repeatDelay: 1,
       });
       track.addEventListener('mousedown', () => tween.pause());
-      document.addEventListener('mouseup', () => tween.resume());
-      track.addEventListener('touchstart', () => tween.pause(), { passive: true });
-      track.addEventListener('touchend', () => tween.resume());
+      document.addEventListener('mouseup',  () => tween.resume());
     })();
 
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
