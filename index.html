@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nikki Panic — Nail Artist</title>
+  <script>history.scrollRestoration = 'manual'; window.scrollTo(0, 0);</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -32,6 +33,7 @@
       color: var(--black);
       -webkit-font-smoothing: antialiased;
       padding-top: var(--nav-height);
+      overflow-x: hidden;
     }
 
     /* ── PRELOADER ── */
@@ -246,7 +248,6 @@
       background: #0a0a0a;
       min-height: 100vh;
       margin-top: calc(-1 * var(--nav-height));
-      overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -1635,9 +1636,8 @@
     })();
 
     // ── GSAP ANIMATIONS ──────────────────────────────────────────
-    // Lock scroll immediately — prevents any position drift before preloader finishes
-    history.scrollRestoration = 'manual';
-    window.scrollTo(0, 0);
+    // Lock scroll on both html + body (body alone doesn't stop all browsers)
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
 
     gsap.registerPlugin(ScrollTrigger);
@@ -1665,9 +1665,11 @@
           ease: 'power4.inOut',
           onComplete: () => {
             preloader.remove();
-            // Unlock scroll and force Lenis to position 0
+            window.scrollTo(0, 0);
+            document.documentElement.style.overflow = '';
             document.body.style.overflow = '';
             lenis.scrollTo(0, { immediate: true });
+            ScrollTrigger.refresh();
           }
         }, '-=0.05')
         .from('.hero-text-main', { opacity: 0, y: 30, duration: 0.35, ease: 'power3.out' }, '-=0.05')
@@ -1729,15 +1731,21 @@
       });
 
       // ── HERO TEXT SLIDE-OFF ──────────────────────────────────
-      // "Nails that make you" slides left; "stop scrolling" slides right.
-      // Starts at 20% through the hero scroll so text is static at the top.
+      // Slides the full viewport width so text travels off screen.
+      // Reversible on scroll-up via scrub.
       gsap.to('.hero-text-main', {
-        xPercent: -130, opacity: 0, ease: 'power2.in',
-        scrollTrigger: { trigger: '.hero', start: '20% top', end: 'bottom top', scrub: 0.8 }
+        x: () => -window.innerWidth, ease: 'power2.in',
+        scrollTrigger: {
+          trigger: '.hero', start: '20% top', end: 'bottom top',
+          scrub: 0.8, invalidateOnRefresh: true
+        }
       });
       gsap.to('.hero-accent', {
-        xPercent: 130, opacity: 0, ease: 'power2.in',
-        scrollTrigger: { trigger: '.hero', start: '20% top', end: 'bottom top', scrub: 0.8 }
+        x: () => window.innerWidth, ease: 'power2.in',
+        scrollTrigger: {
+          trigger: '.hero', start: '20% top', end: 'bottom top',
+          scrub: 0.8, invalidateOnRefresh: true
+        }
       });
 
       // ── MAGNETIC EFFECT ──────────────────────────────────────
