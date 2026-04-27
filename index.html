@@ -1730,13 +1730,14 @@
 
       // ── HERO TEXT SLIDE-OFF ──────────────────────────────────
       // "Nails that make you" slides left; "stop scrolling" slides right.
+      // Starts at 20% through the hero scroll so text is static at the top.
       gsap.to('.hero-text-main', {
-        xPercent: -160, opacity: 0, ease: 'power1.in',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.7 }
+        xPercent: -130, opacity: 0, ease: 'power2.in',
+        scrollTrigger: { trigger: '.hero', start: '20% top', end: 'bottom top', scrub: 0.8 }
       });
       gsap.to('.hero-accent', {
-        xPercent: 160, opacity: 0, ease: 'power1.in',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.7 }
+        xPercent: 130, opacity: 0, ease: 'power2.in',
+        scrollTrigger: { trigger: '.hero', start: '20% top', end: 'bottom top', scrub: 0.8 }
       });
 
       // ── MAGNETIC EFFECT ──────────────────────────────────────
