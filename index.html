@@ -678,7 +678,10 @@
       .videos-track {
         padding: 4px 0 20px;
       }
-      .videos-track::before,
+      .videos-track::before {
+        content: '';
+        flex: 0 0 calc(50vw - 130px);
+      }
       .videos-track::after {
         content: '';
         flex: 0 0 24px;
