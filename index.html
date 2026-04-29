@@ -819,7 +819,7 @@
       padding: 120px 0;
       background: var(--white);
       border-bottom: 1px solid var(--border);
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     .collabs-header {
@@ -965,8 +965,8 @@
 
     @media (max-width: 900px) {
       .collabs-section { padding: 72px 0; }
-      .collabs-header { padding: 0 20px; }
-      .collabs-grid { padding: 4px 0 20px; gap: 16px; }
+      .collabs-header { padding: 0 20px; margin-bottom: 16px; }
+      .collabs-grid { padding: 4px 0 48px; gap: 16px; }
       .collab-card { flex: 0 0 300px; }
       .collabs-grid::before,
       .collabs-grid::after { content: ''; flex: 0 0 20px; }
