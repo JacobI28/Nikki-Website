@@ -816,9 +816,10 @@
 
     /* ── BRAND COLLABORATIONS ── */
     .collabs-section {
-      padding: 120px 80px;
+      padding: 120px 0;
       background: var(--white);
       border-bottom: 1px solid var(--border);
+      overflow: hidden;
     }
 
     .collabs-header {
@@ -826,6 +827,7 @@
       align-items: baseline;
       justify-content: space-between;
       margin-bottom: 48px;
+      padding: 0 80px;
     }
 
     .collabs-heading {
@@ -844,12 +846,23 @@
     }
 
     .collabs-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
       gap: 24px;
+      padding: 4px 80px 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
     }
 
+    .collabs-grid::-webkit-scrollbar { display: none; }
+    .collabs-grid:active { cursor: grabbing; }
+
     .collab-card {
+      flex: 0 0 360px;
+      scroll-snap-align: start;
       border: 1px solid var(--border);
       border-radius: 4px;
       overflow: hidden;
@@ -949,12 +962,12 @@
     }
 
     @media (max-width: 900px) {
-      .collabs-section { padding: 72px 20px; }
-      .collabs-grid { grid-template-columns: 1fr; gap: 16px; max-width: 480px; }
-    }
-
-    @media (max-width: 600px) {
-      .collabs-grid { max-width: none; }
+      .collabs-section { padding: 72px 0; }
+      .collabs-header { padding: 0 20px; }
+      .collabs-grid { padding: 4px 0 20px; gap: 16px; }
+      .collab-card { flex: 0 0 300px; }
+      .collabs-grid::before,
+      .collabs-grid::after { content: ''; flex: 0 0 20px; }
     }
 
     /* ── CTA SECTION ── */
@@ -1582,6 +1595,25 @@
       // Prevent stray clicks after drag
       track.addEventListener('click', e => {
         if (Math.abs(track.scrollLeft - scrollLeft) > 4) e.preventDefault();
+      });
+    })();
+
+    // ── COLLABS DRAG-SCROLL ─────────────────────────────────────
+    (function () {
+      const grid = document.querySelector('.collabs-grid');
+      if (!grid) return;
+      let isDragging = false, startX = 0, scrollLeft = 0;
+      grid.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.pageX - grid.offsetLeft;
+        scrollLeft = grid.scrollLeft;
+      });
+      document.addEventListener('mouseup',    () => { isDragging = false; });
+      document.addEventListener('mouseleave', () => { isDragging = false; });
+      grid.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        e.preventDefault();
+        grid.scrollLeft = scrollLeft - (e.pageX - grid.offsetLeft - startX) * 1.4;
       });
     })();
 
