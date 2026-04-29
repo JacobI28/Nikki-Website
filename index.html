@@ -850,11 +850,13 @@
       gap: 24px;
       padding: 4px 80px 20px;
       overflow-x: auto;
+      overflow-y: hidden;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
       cursor: grab;
+      touch-action: pan-x;
     }
 
     .collabs-grid::-webkit-scrollbar { display: none; }
