@@ -1334,7 +1334,7 @@
             </div>
           </div>
           <div class="collab-img" style="position:relative; overflow:hidden; padding:0;">
-            <video src="UnderArmour.MOV" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+            <video src="UnderArmour.MOV" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
           </div>
           <div class="collab-body">
             <p class="collab-desc">Created a full editorial look using OPI's Infinite Shine collection for their autumn launch campaign, reaching a combined 4.2M impressions across TikTok and Instagram.</p>
@@ -1557,7 +1557,7 @@
 
     // ── VIDEO CARD SCROLL-TO-PLAY ────────────────────────────────
     (function () {
-      const videos = document.querySelectorAll('.video-thumb video');
+      const videos = document.querySelectorAll('.video-thumb video, .collab-img video');
       if (!videos.length) return;
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
