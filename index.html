@@ -1554,12 +1554,18 @@
       });
     })();
 
-    // ── VIDEO CARD HOVER-TO-PLAY ─────────────────────────────────
-    document.querySelectorAll('.video-thumb video').forEach(v => {
-      const card = v.closest('.video-card');
-      card.addEventListener('mouseenter', () => v.play());
-      card.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
-    });
+    // ── VIDEO CARD SCROLL-TO-PLAY ────────────────────────────────
+    (function () {
+      const videos = document.querySelectorAll('.video-thumb video');
+      if (!videos.length) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.play();
+          else { e.target.pause(); e.target.currentTime = 0; }
+        });
+      }, { threshold: 0.5 });
+      videos.forEach(v => obs.observe(v));
+    })();
 
     // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
     (function () {
