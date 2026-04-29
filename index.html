@@ -1124,38 +1124,29 @@
 
     /* ── BRAND STRIP ── */
     .brand-strip {
-      padding: 28px 0;
+      padding: 36px 80px;
       border-top: 1px solid var(--border);
-      overflow: hidden;
       background: var(--white);
     }
 
-    .brand-strip-track {
-      display: flex;
-      width: max-content;
-      animation: brand-scroll 28s linear infinite;
-    }
-
-    .brand-strip-track:hover { animation-play-state: paused; }
-
-    .brand-strip-inner {
-      display: flex;
-      align-items: center;
-      gap: 40px;
-      padding: 0 20px;
+    .brand-strip-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 28px 24px;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 36px;
-      min-width: 72px;
+      height: 40px;
     }
 
     .brand-logo img {
-      max-height: 32px;
-      max-width: 90px;
+      max-height: 34px;
+      max-width: 100%;
       width: auto;
       object-fit: contain;
       filter: grayscale(100%);
@@ -1177,13 +1168,13 @@
       white-space: nowrap;
     }
 
-    @keyframes brand-scroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    @media (max-width: 900px) {
+      .brand-strip { padding: 28px 20px; }
+      .brand-strip-grid { grid-template-columns: repeat(4, 1fr); gap: 24px 16px; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .brand-strip-track { animation: none; }
+    @media (max-width: 480px) {
+      .brand-strip-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -1450,43 +1441,23 @@
 
       <!-- Brand logo strip -->
       <div class="brand-strip">
-        <div class="brand-strip-track">
-          <div class="brand-strip-inner">
-            <div class="brand-logo"><img src="https://logo.clearbit.com/maccosmetics.com"  title="MAC Cosmetics" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>MAC</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/kfc.com"            title="KFC"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>KFC</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/underarmour.com"    title="Under Armour"  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>UA</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/just-eat.com"       title="Just Eat"      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Just Eat</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/ghdhair.com"        title="GHD"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>GHD</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/bose.com"           title="Bose"          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Bose</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/juicycouture.com"   title="Juicy Couture" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Juicy Couture</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/nyxcosmetics.com"   title="NYX"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>NYX</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/crocs.com"          title="Crocs"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Crocs</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/walls.co.uk"        title="Walls"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Walls</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/iamgia.com"         title="I.Am.Gia."     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>I.Am.Gia.</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/skims.com"          title="Skims"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Skims</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/joonbyrd.com"       title="Joonbyrd"      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Joonbyrd</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/vyrao.com"          title="Vyrao"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Vyrao</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/luarny.com"         title="Luar"          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Luar</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/ors.com"            title="ORS"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>ORS</span></div>
-          </div>
-          <div class="brand-strip-inner" aria-hidden="true">
-            <div class="brand-logo"><img src="https://logo.clearbit.com/maccosmetics.com"  title="MAC Cosmetics" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>MAC</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/kfc.com"            title="KFC"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>KFC</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/underarmour.com"    title="Under Armour"  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>UA</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/just-eat.com"       title="Just Eat"      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Just Eat</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/ghdhair.com"        title="GHD"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>GHD</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/bose.com"           title="Bose"          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Bose</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/juicycouture.com"   title="Juicy Couture" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Juicy Couture</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/nyxcosmetics.com"   title="NYX"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>NYX</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/crocs.com"          title="Crocs"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Crocs</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/walls.co.uk"        title="Walls"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Walls</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/iamgia.com"         title="I.Am.Gia."     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>I.Am.Gia.</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/skims.com"          title="Skims"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Skims</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/joonbyrd.com"       title="Joonbyrd"      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Joonbyrd</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/vyrao.com"          title="Vyrao"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Vyrao</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/luarny.com"         title="Luar"          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Luar</span></div>
-            <div class="brand-logo"><img src="https://logo.clearbit.com/ors.com"            title="ORS"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>ORS</span></div>
-          </div>
+        <div class="brand-strip-grid">
+          <div class="brand-logo"><img src="https://logo.clearbit.com/bose.com"           title="Bose"          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Bose</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/crocs.com"          title="Crocs"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Crocs</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/ghdhair.com"        title="GHD"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>GHD</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/iamgia.com"         title="I.Am.Gia."     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>I.Am.Gia.</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/joonbyrd.com"       title="Joonbyrd"      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Joonbyrd</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/juicycouture.com"   title="Juicy Couture" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Juicy Couture</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/just-eat.com"       title="Just Eat"      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Just Eat</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/kfc.com"            title="KFC"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>KFC</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/luarny.com"         title="Luar"          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Luar</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/maccosmetics.com"   title="MAC Cosmetics" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>MAC</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/nyxcosmetics.com"   title="NYX"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>NYX</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/ors.com"            title="ORS"           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>ORS</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/skims.com"          title="Skims"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Skims</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/underarmour.com"    title="Under Armour"  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Under Armour</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/vyrao.com"          title="Vyrao"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Vyrao</span></div>
+          <div class="brand-logo"><img src="https://logo.clearbit.com/walls.co.uk"        title="Walls"         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span>Walls</span></div>
         </div>
       </div>
 
