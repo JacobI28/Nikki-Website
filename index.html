@@ -1559,13 +1559,22 @@
     (function () {
       const videos = document.querySelectorAll('.video-thumb video, .collab-img video');
       if (!videos.length) return;
+
+      function tryPlay(v) { v.play().catch(() => {}); }
+
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
-          if (e.isIntersecting) e.target.play();
+          if (e.isIntersecting) tryPlay(e.target);
           else { e.target.pause(); e.target.currentTime = 0; }
         });
-      }, { threshold: 0.5 });
-      videos.forEach(v => obs.observe(v));
+      }, { threshold: 0.1 });
+
+      videos.forEach(v => {
+        obs.observe(v);
+        // iOS fallback: play on first user interaction anywhere on page
+        const unlock = () => { tryPlay(v); document.removeEventListener('touchstart', unlock); };
+        document.addEventListener('touchstart', unlock, { passive: true });
+      });
     })();
 
     // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
