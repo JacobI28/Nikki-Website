@@ -964,9 +964,8 @@
       .collabs-section { padding: 72px 0; }
       .collabs-header { padding: 0 20px; margin-bottom: 8px; }
       .collabs-grid { padding: 4px 0 64px; gap: 16px; }
-      .collab-card { flex: 0 0 300px; }
-      .collabs-grid::before,
-      .collabs-grid::after { content: ''; flex: 0 0 20px; }
+      .collab-card { flex: 0 0 300px; scroll-snap-align: center; }
+      .collabs-spacer { flex: 0 0 calc(50vw - 150px); }
     }
 
     /* ── CTA SECTION ── */
@@ -1364,6 +1363,8 @@
 
       <div class="collabs-grid">
 
+        <div class="collabs-spacer" aria-hidden="true"></div>
+
         <!-- Card 1 -->
         <div class="collab-card">
           <div class="collab-card-top">
@@ -1421,6 +1422,8 @@
             <span class="collab-year">2024</span>
           </div>
         </div>
+
+        <div class="collabs-spacer" aria-hidden="true"></div>
 
       </div>
 
