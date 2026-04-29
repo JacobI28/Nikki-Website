@@ -1236,15 +1236,7 @@
 
         <div class="video-card">
           <div class="video-thumb">
-            <svg class="video-thumb-bg" viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#1a0533"/>
-                  <stop offset="100%" stop-color="#6b21a8"/>
-                </linearGradient>
-              </defs>
-              <rect width="180" height="320" fill="url(#g1)"/>
-            </svg>
+            <video class="video-thumb-bg" src="hero.MP4" muted loop playsinline preload="none" style="object-fit:cover;"></video>
             <div class="video-views">2.1M views</div>
             <div class="video-play">
               <div class="video-play-btn">
@@ -1561,6 +1553,13 @@
         document.addEventListener('click',      () => v.play(), { once: true });
       });
     })();
+
+    // ── VIDEO CARD HOVER-TO-PLAY ─────────────────────────────────
+    document.querySelectorAll('.video-thumb video').forEach(v => {
+      const card = v.closest('.video-card');
+      card.addEventListener('mouseenter', () => v.play());
+      card.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
+    });
 
     // ── VIDEOS DRAG-SCROLL ──────────────────────────────────────
     (function () {
