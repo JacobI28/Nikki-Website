@@ -678,13 +678,9 @@
       .videos-track {
         padding: 4px 0 20px;
       }
-      .videos-track::before {
-        content: '';
+      .videos-spacer {
         flex: 0 0 calc(50vw - 130px);
-      }
-      .videos-track::after {
-        content: '';
-        flex: 0 0 24px;
+        scroll-snap-align: start;
       }
     }
 
@@ -1234,6 +1230,7 @@
       <p class="videos-drag-hint">Drag to explore →</p>
 
       <div class="videos-track" id="videosTrack">
+        <div class="videos-spacer" aria-hidden="true"></div>
 
         <div class="video-card">
           <div class="video-thumb">
